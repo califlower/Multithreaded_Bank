@@ -1,0 +1,84 @@
+Project: Multithreaded Bank System
+
+What exactly do we have to do?
+  - For this assignment we will write programs for a multi-threaded banking system simulation. 
+  - Idea is to learn about mutexes and thread coordination.
+  - Write a single server that supports multiple clients communicating through TCP/IP network connections.
+  - Will require the use of mutexes to protect and managed shared data-structures
+  
+Server: Multithreaded Bank Server Program
+  - Server process should spawn single session-acceptor thread. 
+  - Session-acceptor thread will accept incoming client connections from seperate client processes.
+  - For each new connection, the session-acceptor thread should create a separate-client service thread
+that communicates exclusively with the connected client.
+  - You may have more than one client connecting to the server concurrently
+  - May be multiple client-service threads running concurrently in the same server process.
+  
+Bank Server Process:
+  - Will maintain a simple bank with multiple accounts.
+  - Maximum of 20 accounts.
+  - Initially bank will have no accounts
+  - Clients may open accounts as needed.
+  - Information for each account:
+    - Account name (string up to 100 characters long)
+    - Current balance (a floating-point number)
+    - In-session flag (a boolean flag indicating whether or not the account is currently being serviced)
+  - Server will handle each client in a separate client-service thread.
+  - KEEP IN MIND any client can open a new account at any time, so adding accounts to your bank must be a mutex-protected
+  operation.
+  
+
+Server: Printing out Account Information
+  - Bank server HAS TO print out a complete list of all accounts every 20 seconds.
+  - Information printed for each account will include:
+    - Account name
+    - Balance
+    - "IN SERVICE" if there is an account session for that particular account.
+  - New accounts cannot be opened while the bank is printing out the account information.
+  - IMPLEMENTATION: will use timers, signal handlers and sempaphores.
+  
+Client: Connecting to the Server
+  - Client program requires the name of the machine running the server process as a command line argument
+  - Machine running server may/may not be the same machine running the client processes.
+  - On invocation, client process must make repeated attempts to connect to the server.
+  - Once connected, client process will prompt for commands.
+  - Command entry must be THROTTLED (can only be entered every seconds)
+  - This deliberately slows down client interaction with the server and simulates many thousands of clients using the bank server.
+  - Client Implentation would have two threads:
+    - command-input thread to read messages from the server and send them to the user.
+    - response-ouput thread to read messages from the server and send them to the user.
+  - Having two threads allows the server to proactively and asynchronously send messages to the client even
+  while the client is waiting for commands from the user.
+  
+Command Syntax:
+  - Command syntax allows the user to open accounts to start sessions to server specific accounts and to exit the client
+  process altogether.
+    - open accountname 
+      - (opens a new bank account, error if bank full or if name already exists)
+      - (initial balance of newly opened account is zero)
+    - start accountname
+      - (starts a customer session for a specific account)
+    - credit amount (credit, debit, balance and finish commands only valid in a customer session)
+      - adds amounts (floating point number)
+    - debit amount 
+      - subtracts amount (floating point number)
+    - balance
+    - finish
+
+Program Start Up:
+  - Client and server programs can be invoked in any order. 
+  - Client processes that cannot find the server should repeatedtly try to connect every 3 seconds.
+  - Client must specify the name of the machine where the client expects to find the server process as a command line
+  argument
+  - Server takes no command line arguments.
+  
+NO DEADLOCKS and NO RACE CONDITIONS allowed.
+  
+  Pe
+    - exist
+  - Client process will send commands to the bank, and the bank will send responses back to the client.
+  - Bank will send back error or confirmation messages for each command.
+  - 
+  
+      
+  
