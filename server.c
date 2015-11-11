@@ -57,33 +57,19 @@ int main(int argc, char ** argv)
 	connection_t * connection;
 	pthread_t thread;
 
-	
-
-	
 	/* create socket */
 	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sock <= 0)
-	{
-		fprintf(stderr, "%s: error: cannot create socket\n", argv[0]);
-		return -3;
-	}
+
 
 	/* bind socket to port */
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = INADDR_ANY;
 	address.sin_port = htons(port);
-	if (bind(sock, (struct sockaddr *)&address, sizeof(struct sockaddr_in)) < 0)
-	{
-		fprintf(stderr, "%s: error: cannot bind socket to port %d\n", argv[0], port);
-		return -4;
-	}
-
+	bind(sock, (struct sockaddr *)&address, sizeof(struct sockaddr_in));
+	
 	/* listen on port */
-	if (listen(sock, 5) < 0)
-	{
-		fprintf(stderr, "%s: error: cannot listen on port\n", argv[0]);
-		return -5;
-	}
+	listen(sock, 5);
+
 
 	printf("%s: ready and listening\n", argv[0]);
 	
