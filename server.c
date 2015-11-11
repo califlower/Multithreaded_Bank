@@ -53,24 +53,13 @@ int main(int argc, char ** argv)
 {
 	int sock = -1;
 	struct sockaddr_in address;
-	int port;
+	int port=2500;
 	connection_t * connection;
 	pthread_t thread;
 
-	/* check for command line arguments */
-	if (argc != 2)
-	{
-		fprintf(stderr, "usage: %s port\n", argv[0]);
-		return -1;
-	}
+	
 
-	/* obtain port number */
-	if (sscanf(argv[1], "%d", &port) <= 0)
-	{
-		fprintf(stderr, "%s: error: wrong parameter: port\n", argv[0]);
-		return -2;
-	}
-
+	
 	/* create socket */
 	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sock <= 0)
