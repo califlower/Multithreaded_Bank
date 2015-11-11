@@ -1,40 +1,68 @@
-/****************** CLIENT CODE ****************/
-
 #include <stdio.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
+#include <netdb.h>
+#include <unistd.h>
 #include <string.h>
 
-int main()
+#define PORT 2500
+#define LOCALHOST 127.0.0.1
+
+int main(int argc, char ** argv)
 {
-  int clientSocket;
-  char buffer[1024];
-  struct sockaddr_in serverAddr;
-  socklen_t addr_size;
+	int port;
+	int sock = -1;
+	struct sockaddr_in address;
+	struct hostent * host;
+	int len;
+	
+	/* checking commandline parameter */
+	if (argc != 4)
+	{
+		printf("usage: %s hostname port text\n", argv[0]);
+		return -1;
+	}
 
-  /*---- Create the socket. The three arguments are: ----*/
-  /* 1) Internet domain 2) Stream socket 3) Default protocol (TCP in this case) */
-  clientSocket = socket(PF_INET, SOCK_STREAM, 0);
-  
-  /*---- Configure settings of the server address struct ----*/
-  /* Address family = Internet */
-  serverAddr.sin_family = AF_INET;
-  /* Set port number, using htons function to use proper byte order */
-  serverAddr.sin_port = htons(7891);
-  /* Set IP address to localhost */
-  serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-  /* Set all bits of the padding field to 0 */
-  memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);  
+	/* obtain port number */
+	if (sscanf(argv[2], "%d", &port) <= 0)
+	{
+		fprintf(stderr, "%s: error: wrong parameter: port\n", argv[0]);
+		return -2;
+	}
 
-  /*---- Connect the socket to the server using the address struct ----*/
-  addr_size = sizeof serverAddr;
-  connect(clientSocket, (struct sockaddr *) &serverAddr, addr_size);
+	/* create socket */
+	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (sock <= 0)
+	{
+		fprintf(stderr, "%s: error: cannot create socket\n", argv[0]);
+		return -3;
+	}
 
-  /*---- Read the message from the server into the buffer ----*/
-  recv(clientSocket, buffer, 1024, 0);
+	/* connect to server */
+	address.sin_family = AF_INET;
+	address.sin_port = htons(port);
+	
+	host = gethostbyname(argv[1]);
+	if (!host)
+	{
+		fprintf(stderr, "%s: error: unknown host %s\n", argv[0], argv[1]);
+		return -4;
+	}
+	memcpy(&address.sin_addr, host->h_addr_list[0], host->h_length);
+	
+	if (connect(sock, (struct sockaddr *)&address, sizeof(address)))
+	{
+		fprintf(stderr, "%s: error: cannot connect to host %s\n", argv[0], argv[1]);
+		return -5;
+	}
 
-  /*---- Print the received message ----*/
-  printf("Data received: %s",buffer);   
+	/* send text to server */
+	len = strlen(argv[3]);
+	write(sock, &len, sizeof(int));
+	write(sock, argv[3], len);
 
-  return 0;
+	/* close socket */
+	close(sock);
+
+	return 0;
 }
+
