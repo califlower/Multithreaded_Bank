@@ -26,7 +26,6 @@ void * process(void * ptr)
 	read(conn->sock, &len, sizeof(int));
 	if (len > 0)
 	{
-		addr = (long)((struct sockaddr_in *)&conn->address)->sin_addr.s_addr;
 		buffer = (char *)malloc((len+1)*sizeof(char));
 		buffer[len] = 0;
 
@@ -34,12 +33,7 @@ void * process(void * ptr)
 		read(conn->sock, buffer, len);
 
 		/* print message */
-		printf("%d.%d.%d.%d: %s\n",
-			(int)((addr      ) & 0xff),
-			(int)((addr >>  8) & 0xff),
-			(int)((addr >> 16) & 0xff),
-			(int)((addr >> 24) & 0xff),
-			buffer);
+		printf("%s\n", buffer);
 		free(buffer);
 	}
 
