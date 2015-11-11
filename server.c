@@ -49,7 +49,7 @@ void * process(void * ptr)
 	pthread_exit(0);
 }
 
-int main(int argc, char ** argv)
+void initConnection()
 {
 	int sock = -1;
 	struct sockaddr_in address;
@@ -71,13 +71,14 @@ int main(int argc, char ** argv)
 	listen(sock, 5);
 
 
-	printf("%s: ready and listening\n", argv[0]);
+	printf("%s: Now Accepting Client Connections...");
 	
 	while (1)
 	{
 		/* accept incoming connections */
 		connection = (connection_t *)malloc(sizeof(connection_t));
 		connection->sock = accept(sock, &connection->address, &connection->addr_len);
+		
 		if (connection->sock <= 0)
 		{
 			free(connection);
@@ -91,5 +92,10 @@ int main(int argc, char ** argv)
 	}
 	
 	return 0;
+}
+
+int main(int argc, char ** argv)
+{
+	initConnection();
 }
 
