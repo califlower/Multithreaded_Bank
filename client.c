@@ -50,7 +50,7 @@ int main(int argc, char ** argv)
 	printf("2: Start\n");
 	printf("3: Exit\n");
 	
-	char input[];
+	char input[10];
 	
 	while (1)
 	{
