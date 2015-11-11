@@ -39,9 +39,8 @@ int main(int argc, char ** argv)
 		return -5;
 	}
 
-	/* send text to server */
-	len = strlen(argv[2]);
-	write(sock, &len, sizeof(int));
+	
+	
 	
 	printf("Connection to Online Bank Successful\n");
 	printf("Welcome to Your Online Bank\n");
@@ -51,9 +50,19 @@ int main(int argc, char ** argv)
 	printf("2: Start\n");
 	printf("3: Exit\n");
 	
+	char input[];
 	
+	while (1)
+	{
+		scanf("%s", (char *)&str1);
+		if (strcmp(input, "1")==0)
+			break;
+		
+		len = strlen(argv[2]);
+		write(sock, &len, sizeof(int));
+		write(sock, argv[2], len);
+	}
 	
-	write(sock, argv[2], len);
 
 	/* close socket */
 	close(sock);
