@@ -5,7 +5,8 @@
 #include <netinet/in.h>
 #include <string.h>
 
-int main(){
+int main()
+{
   int clientSocket;
   char buffer[1024];
   struct sockaddr_in serverAddr;
