@@ -44,7 +44,7 @@ void * process(void * ptr)
 	pthread_exit(0);
 }
 
-int main(int argc, char ** argv)
+void initConnection()
 {
 	int sock = -1;
 	struct sockaddr_in address;
@@ -66,7 +66,7 @@ int main(int argc, char ** argv)
 	listen(sock, 5);
 
 
-	printf("%s: ready and listening\n", argv[0]);
+	printf("Now Accepting Incoming Client Connections...\n");
 	
 	while (1)
 	{
@@ -85,7 +85,12 @@ int main(int argc, char ** argv)
 		}
 	}
 	
-	return 0;
+	return;
+}
+
+int main(int argc, char ** argv)
+{
+	initConnection();
 }
 
 
