@@ -25,7 +25,7 @@ int main(int argc, char ** argv)
 	/* connect to server */
 	address.sin_family = AF_INET;
 	address.sin_port = htons(port);
-	host = gethostbyname("localhost");
+	host = gethostbyname(argv[1]);
 	if (!host)
 	{
 		fprintf(stderr, "%s: error: unknown host %s\n", argv[0], argv[1]);
@@ -40,9 +40,20 @@ int main(int argc, char ** argv)
 	}
 
 	/* send text to server */
-	len = strlen(argv[1]);
+	len = strlen(argv[2]);
 	write(sock, &len, sizeof(int));
-	write(sock, argv[1], len);
+	
+	printf("Connection to Online Bank Successful\n");
+	printf("Welcome to Your Online Bank\n");
+	printf("-----------------------------\n");
+	printf("Options\n");
+	printf("1: Open\n");
+	printf("2: Start\n");
+	printf("3: Exit\n");
+	
+	
+	
+	write(sock, argv[2], len);
 
 	/* close socket */
 	close(sock);
