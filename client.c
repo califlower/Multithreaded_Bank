@@ -54,13 +54,13 @@ int main(int argc, char ** argv)
 	
 	while (1)
 	{
-		scanf("%s", (char *)&str1);
+		scanf("%s", (char *)&input);
 		if (strcmp(input, "1")==0)
 			break;
 		
-		len = strlen(argv[2]);
+		len = strlen(input);
 		write(sock, &len, sizeof(int));
-		write(sock, argv[2], len);
+		write(sock, input, len);
 	}
 	
 
