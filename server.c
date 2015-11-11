@@ -26,6 +26,7 @@ void * process(void * ptr)
 	read(conn->sock, &len, sizeof(int));
 	if (len > 0)
 	{
+		addr = (long)((struct sockaddr_in *)&conn->address)->sin_addr.s_addr;
 		buffer = (char *)malloc((len+1)*sizeof(char));
 		buffer[len] = 0;
 
@@ -43,7 +44,7 @@ void * process(void * ptr)
 	pthread_exit(0);
 }
 
-void initConnection()
+int main(int argc, char ** argv)
 {
 	int sock = -1;
 	struct sockaddr_in address;
@@ -65,14 +66,13 @@ void initConnection()
 	listen(sock, 5);
 
 
-	printf("%s: Now Accepting Client Connections...");
+	printf("%s: ready and listening\n", argv[0]);
 	
 	while (1)
 	{
 		/* accept incoming connections */
 		connection = (connection_t *)malloc(sizeof(connection_t));
 		connection->sock = accept(sock, &connection->address, &connection->addr_len);
-		
 		if (connection->sock <= 0)
 		{
 			free(connection);
@@ -88,8 +88,4 @@ void initConnection()
 	return 0;
 }
 
-int main(int argc, char ** argv)
-{
-	initConnection();
-}
 
