@@ -1,6 +1,6 @@
 #include "server.h"
 
-account accountList[20];
+account accountList[20]= {NULL };
 
 
 void * process(void * ptr)
