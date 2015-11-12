@@ -72,12 +72,7 @@ void initConnection()
 	int sock;
 	struct sockaddr_in address;
 	
-	if (argc < 2){
-		printf("ERROR, PORT NUMBER NOT PROVIDED!");
-		exit(0);
-	}
-	
-	int port=atoi(argv[1]);
+	int port=2500;
 	
 	connection_t * connection;
 	pthread_t thread;
