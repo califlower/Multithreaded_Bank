@@ -69,14 +69,21 @@ void * process(void * ptr)
 
 void initConnection()
 {
-	int sock = -1;
+	int sock;
 	struct sockaddr_in address;
-	int port=2500;
+	
+	if (argc < 2){
+		printf("ERROR, PORT NUMBER NOT PROVIDED!");
+		exit(0);
+	}
+	
+	int port=atoi(argv[1]);
+	
 	connection_t * connection;
 	pthread_t thread;
 
 	/* create socket */
-	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	sock = socket(AF_INET, SOCK_STREAM, 0);
 
 
 	/* bind socket to port */
@@ -84,7 +91,10 @@ void initConnection()
 	address.sin_addr.s_addr = INADDR_ANY;
 	address.sin_port = htons(port);
 
-	bind(sock, (struct sockaddr *)&address, sizeof(struct sockaddr_in));
+	if(bind(sock, (struct sockaddr *)&address, sizeof(struct sockaddr_in)) < 0){
+		printf("Error in Binding!");
+		exit(0);
+	}
 	
 	/* listen on port */
 	listen(sock, 5);
