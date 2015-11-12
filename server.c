@@ -1,14 +1,13 @@
 #include "server.h"
 
 account accountList[20]= {NULL };
-
+int port=2500;
+int len=1000;
 
 void * process(void * ptr)
 {
 	char buffer[1000];
-	int len=1000;
 	
-
 	connection_t * conn;
 
 	if (!ptr) 
@@ -43,12 +42,27 @@ void * process(void * ptr)
 
 }
 
+void addAccount(char * name)
+{
+	
+}
+
+void debitAccount(char *account, float amount)
+{
+	
+}
+
+
+void creditAccount(char *account, float amount)
+{
+	
+}
+
 void initConnection()
 {
 	int sock;
 	struct sockaddr_in address;
 	
-	int port=2500;
 	
 	connection_t * connection;
 	pthread_t thread;
@@ -62,7 +76,8 @@ void initConnection()
 	address.sin_addr.s_addr = INADDR_ANY;
 	address.sin_port = htons(port);
 
-	if(bind(sock, (struct sockaddr *)&address, sizeof(struct sockaddr_in)) < 0){
+	if(bind(sock, (struct sockaddr *)&address, sizeof(struct sockaddr_in)) < 0)
+	{
 		printf("Error in Binding!");
 		exit(0);
 	}
