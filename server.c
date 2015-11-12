@@ -6,11 +6,14 @@
 #include <unistd.h>
 #include <string.h>
 
+
+
 typedef struct
 {
 	int sock;
 	struct sockaddr address;
 	int addr_len;
+
 } connection_t;
 
 void * process(void * ptr)
@@ -101,4 +104,6 @@ void initConnection()
 int main(int argc, char ** argv)
 {
 	initConnection();
+	return 0;
+
 }
