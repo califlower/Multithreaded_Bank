@@ -4,5 +4,6 @@ client:
 server:
 	gcc -pthread -Wall -o server server.c
 clean:
-	rm -f s1
+	rm -f client
+	rm -f server
 	rm -rf *.o
