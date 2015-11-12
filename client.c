@@ -50,17 +50,18 @@ int main(int argc, char ** argv)
 	printf("2: Start\n");
 	printf("3: Exit\n");
 	
-	char input[10];
+	char input[1000];
 	
 	while (1)
 	{
 		scanf("%s", (char *)&input);
-		if (strcmp(input, "1")==0)
-			break;
+
 		
 		len = strlen(input);
 		write(sock, &len, sizeof(int));
 		write(sock, input, len);
+		if (strcmp(input, "3")==0)
+			break;
 	}
 	
 
@@ -69,4 +70,3 @@ int main(int argc, char ** argv)
 
 	return 0;
 }
-
