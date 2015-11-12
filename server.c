@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <linux/in.h>
 #include <unistd.h>
+#include <string.h>
 
 typedef struct
 {
@@ -14,34 +15,43 @@ typedef struct
 
 void * process(void * ptr)
 {
-	char * buffer;
-	int len;
+	char buffer[1000];
+	int len=1000;
 	connection_t * conn;
 	long addr = 0;
 
-	if (!ptr) pthread_exit(0); 
+	if (!ptr) 
+		pthread_exit(0); 
+
 	conn = (connection_t *)ptr;
 
-	/* read length of message */
-	read(conn->sock, &len, sizeof(int));
-	if (len > 0)
+	
+	while (1)
 	{
-		addr = (long)((struct sockaddr_in *)&conn->address)->sin_addr.s_addr;
-		buffer = (char *)malloc((len+1)*sizeof(char));
+
+
+		/* read length of message */
+		read(conn->sock, &len, sizeof(int));
+	
+		addr = (long)((struct sockaddr_in *) &conn->address)->sin_addr.s_addr;
 		buffer[len] = 0;
 
 		/* read message */
 		read(conn->sock, buffer, len);
+		
+		if (strcmp(buffer,"3")==0)
+			break;
 
 		/* print message */
 		printf("%s\n", buffer);
-		free(buffer);
+		
 	}
 
 	/* close socket and clean up */
 	close(conn->sock);
 	free(conn);
 	pthread_exit(0);
+
 }
 
 void initConnection()
@@ -92,5 +102,3 @@ int main(int argc, char ** argv)
 {
 	initConnection();
 }
-
-
