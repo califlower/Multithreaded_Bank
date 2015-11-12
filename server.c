@@ -2,26 +2,38 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <sys/socket.h>
-#include <linux/in.h>
+#include <netinet/in.h>
 #include <unistd.h>
 #include <string.h>
-
 
 
 typedef struct
 {
 	int sock;
 	struct sockaddr address;
-	int addr_len;
+	socklen_t addr_len;
 
 } connection_t;
+
+
+typedef struct
+{
+	char accountName[100];
+	float balance;
+	int inUse;
+} account;
+
+account accountList[20];
+
+
 
 void * process(void * ptr)
 {
 	char buffer[1000];
 	int len=1000;
+	
+
 	connection_t * conn;
-	long addr = 0;
 
 	if (!ptr) 
 		pthread_exit(0); 
@@ -32,11 +44,9 @@ void * process(void * ptr)
 	while (1)
 	{
 
-
 		/* read length of message */
 		read(conn->sock, &len, sizeof(int));
 	
-		addr = (long)((struct sockaddr_in *) &conn->address)->sin_addr.s_addr;
 		buffer[len] = 0;
 
 		/* read message */
@@ -73,6 +83,7 @@ void initConnection()
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = INADDR_ANY;
 	address.sin_port = htons(port);
+
 	bind(sock, (struct sockaddr *)&address, sizeof(struct sockaddr_in));
 	
 	/* listen on port */
