@@ -1,6 +1,6 @@
 all: client server
 client:
-	gcc -Wall -o client client.c
+	gcc -pthread -Wall -o client client.c
 server:
 	gcc -pthread -Wall -o server server.c
 clean:

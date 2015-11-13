@@ -21,8 +21,6 @@ void initConnection(char * inputHost)
 {
 	struct sockaddr_in address;
 	struct hostent * host;
-
-	int len;
 	
 	/* create socket */
 	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -36,11 +34,6 @@ void initConnection(char * inputHost)
 	
 	connect(sock, (struct sockaddr *)&address, sizeof(address));
 
-	
-	
-	
-	
-
 }
 
 void *recieveInput()
@@ -50,6 +43,7 @@ void *recieveInput()
 
 void *sendInput(void *emptyPtr)
 {
+	int len;
 	char input[1000];
 	while (1)
 	{
@@ -61,19 +55,20 @@ void *sendInput(void *emptyPtr)
 		if (strcmp(input, "3")==0)
 			break;
 	}
+
 }
 
 int main(int argc, char ** argv)
 {
-	pthread_t rThread;
+	/*pthread_t rThread;*/
 	pthread_t sThread;
 	
-	initConnection();
-	
+	initConnection(argv[1]);
+	printInstructions();
 	pthread_create(&sThread, NULL, sendInput, NULL);
 	pthread_join(sThread,NULL);
 	
-	printInstructions();
+	
 	
 
 	/* close socket */
