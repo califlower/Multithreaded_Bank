@@ -1,5 +1,9 @@
 #include "client.h"
 
+int port=2500;
+int sock = -1;
+
+
 void printInstructions()
 {
 
@@ -13,18 +17,8 @@ void printInstructions()
 
 }
 
-void cHandler(int signum)
+void initConnection(char * inputHost)
 {
-
-}
-
-int main(int argc, char ** argv)
-{
-
-	signal(SIGTERM, cHandler);
-	int port=2500;
-	int sock = -1;
-	
 	struct sockaddr_in address;
 	struct hostent * host;
 
@@ -36,21 +30,30 @@ int main(int argc, char ** argv)
 	/* connect to server */
 	address.sin_family = AF_INET;
 	address.sin_port = htons(port);
-	host = gethostbyname(argv[1]);
+	host = gethostbyname(inputHost);
 
 	memcpy(&address.sin_addr, host->h_addr_list[0], host->h_length);
 	
 	connect(sock, (struct sockaddr *)&address, sizeof(address));
 
-	printInstructions();
 	
+	
+	
+	
+
+}
+
+void *recieveInput()
+{
+	
+}
+
+void *sendInput(void *emptyPtr)
+{
 	char input[1000];
-	
 	while (1)
 	{
-		scanf("%s", (char *)&input);
-
-		
+		scanf("%s", (char *)&input);	
 		len = strlen(input);
 		write(sock, &len, sizeof(int));
 		write(sock, input, len);
@@ -58,6 +61,19 @@ int main(int argc, char ** argv)
 		if (strcmp(input, "3")==0)
 			break;
 	}
+}
+
+int main(int argc, char ** argv)
+{
+	pthread_t rThread;
+	pthread_t sThread;
+	
+	initConnection();
+	
+	pthread_create(&sThread, NULL, sendInput, NULL);
+	pthread_join(sThread,NULL);
+	
+	printInstructions();
 	
 
 	/* close socket */
