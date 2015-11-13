@@ -1,7 +1,7 @@
 #include "server.h"
 
 account accountList[20]= {NULL };
-int port=3000;
+int port=2500;
 int len=1000;
 
 void * process(void * ptr)
