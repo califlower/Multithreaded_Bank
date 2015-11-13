@@ -36,15 +36,33 @@ void initConnection(char * inputHost)
 
 }
 
-void *recieveInput()
+void *recieveInput(void *emptyPtr)
 {
-	
+	while (1)
+	{	
+		int len=1000;
+		char input[1000];	
+
+		/* read length of message */
+
+		read(sock, &len, sizeof(int));
+		input[len] = 0;
+
+		/* read message */
+		read(sock, input, len);
+		
+		/* print message */
+		printf("%s\n", input);
+	}
+
+	return NULL;
 }
 
 void *sendInput(void *emptyPtr)
 {
 	int len;
 	char input[1000];
+
 	while (1)
 	{
 		scanf("%s", (char *)&input);	
@@ -56,11 +74,10 @@ void *sendInput(void *emptyPtr)
 			break;
 	}
 
+	return NULL;
+
 }
 
-void *receiveInput(void *emptyPtr){
-	
-}
 void exitHandler(int signum)
 {
 	char input[5]="3";
@@ -70,31 +87,24 @@ void exitHandler(int signum)
 	{
 		write(sock, &len, sizeof(int));
 		write(sock, input, len);
-	}
-	
-
-
-	
-	
-	
+	}	
 }
 
 int main(int argc, char ** argv)
 {
-	/*pthread_t rThread;*/
-	pthread_t sendingThread, receivingThread;
-	
+	pthread_t rThread;
+	pthread_t sThread;
+
 	signal(SIGHUP, exitHandler);
 
 	initConnection(argv[1]);
 	printInstructions();
-	
-	pthread_create(&sendingThread, NULL, sendInput, NULL);
-	pthread_create(&receivingThread, NULL, recieveInput, NULL); // have to add the receiveInput Function
-	pthread_join(sendingThread,NULL);
-	
-	
-	
+
+	pthread_create(&sThread, NULL, sendInput, NULL);
+	pthread_create(&rThread, NULL, recieveInput, NULL);
+
+	pthread_join(rThread,NULL);
+	pthread_join(sThread,NULL);
 	
 
 	/* close socket */
