@@ -58,6 +58,9 @@ void *sendInput(void *emptyPtr)
 
 }
 
+void *receiveInput(void *emptyPtr){
+	
+}
 void exitHandler(int signum)
 {
 	char input[5]="3";
@@ -79,14 +82,17 @@ void exitHandler(int signum)
 int main(int argc, char ** argv)
 {
 	/*pthread_t rThread;*/
-	pthread_t sThread;
+	pthread_t sendingThread, receivingThread;
+	
 	signal(SIGHUP, exitHandler);
 
 	initConnection(argv[1]);
 	printInstructions();
-
-	pthread_create(&sThread, NULL, sendInput, NULL);
-	pthread_join(sThread,NULL);
+	
+	pthread_create(&sendingThread, NULL, sendInput, NULL);
+	pthread_create(&receivingThread, NULL, recieveInput, NULL); // have to add the receiveInput
+	pthread_join(sendingThread,NULL);
+	
 	
 	
 	
