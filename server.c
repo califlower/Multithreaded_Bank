@@ -1,7 +1,7 @@
 #include "server.h"
 
 /*GLOBAL VARIABLES and STRUCTS*/
-static account accountList[20]= {NULL};
+static account *accountList[20]= {NULL};
 static int port=2500;
 static int numAcc=0;
 
@@ -9,67 +9,7 @@ pthread_t thread;
 pthread_mutex_t addLock;
 
 
-/*MAIN CLIENT PROCESS*/
-void * process(void * ptr)
-{
-	char buffer[1000];
-	int len=1000;
-	connection_t * conn = (connection_t *) ptr;
 
-	while (1)
-	{
-		/* read length of message */
-		read(conn->sock, &len, sizeof(int));
-		buffer[len] = 0;
-		
-		/* read message */
-		read(conn->sock, buffer, len);
-		
-		if (strcmp(buffer,"3")==0)
-			break;
-			
-		else if (strcasecmp(buffer,"open")=0)
-		{
-			read(conn->sock, &len, sizeof(int));
-			buffer[len] = 0;
-			read(conn->sock, buffer, len);
-			
-			int x=addAccount(buffer);
-			
-			if (x=0)
-			{
-				char str[15]= "Account Added"
-				write(conn->sock, str, strlen(str));
-				free(str);
-			}
-			else if (x=1)
-			{
-				char str[15]= "Too many accounts"
-				write(conn->sock, str, strlen(str));
-				free(str);
-			}
-			else
-			{
-				char str[15]= "Account name too large"
-				write(conn->sock, str, strlen(str));
-				free(str);
-			}
-			
-			
-			
-		}
-
-		/* print message */
-		printf("%s\n", buffer);
-		
-	}
-
-	/* close socket and clean up */
-	close(conn->sock);
-	free(conn);
-	pthread_exit(0);
-
-}
 
 /* Return 0 if Sucess, Return 1 if too many accounts, return 2 if accountname too large*/
 int addAccount(char * name)
@@ -90,17 +30,80 @@ int addAccount(char * name)
 	}
 	else
 	{
-		account newAccount=malloc(sizeof(struct account));
-		strcpy(newAccount->accountName);
+		account *newAccount=malloc(sizeof(account));
+		strcpy(newAccount->accountName,name);
 		newAccount->balance=0;
 		newAccount->inUse=0;
-		numAc++;
+		accountList[numAcc]=newAccount;
+		numAcc++;
 		pthread_mutex_unlock(&addLock);
 		
 		return 0;
 	}
 	
 }
+
+/*MAIN CLIENT PROCESS*/
+void * process(void * ptr)
+{
+	char buffer[1000];
+	int len=1000;
+	connection_t * conn = (connection_t *) ptr;
+
+	while (1)
+	{
+		/* read length of message */
+		read(conn->sock, &len, sizeof(int));
+		buffer[len] = 0;
+		
+		/* read message */
+		read(conn->sock, buffer, len);
+		
+		if (strcmp(buffer,"3")==0)
+			break;
+			
+		else if (strcasecmp(buffer,"open")==0)
+		{
+			read(conn->sock, &len, sizeof(int));
+			buffer[len] = 0;
+			read(conn->sock, buffer, len);
+			
+			int x=addAccount(buffer);
+			
+			if (x==0)
+			{
+				char str[30]= "Account Added";
+				write(conn->sock, str, strlen(str));
+			}
+			else if (x==1)
+			{
+				char str[30]= "Too many accounts";
+				write(conn->sock, str, strlen(str));
+			}
+			else
+			{
+				char str[30]= "Account name too large";
+				write(conn->sock, str, strlen(str));
+
+			}
+			
+			
+			
+		}
+
+		/* print message */
+		printf("%s\n", buffer);
+		
+	}
+
+	/* close socket and clean up */
+	close(conn->sock);
+	free(conn);
+	pthread_exit(0);
+
+}
+
+
 
 void debitAccount(char *account, float amount)
 {
@@ -129,7 +132,7 @@ void initConnection()
 	address.sin_addr.s_addr = INADDR_ANY;
 	address.sin_port = htons(port);
 
-	bind(sock, (struct sockaddr *)&address, sizeof(struct sockaddr_in)) < 0);
+	bind(sock, (struct sockaddr *)&address, sizeof(struct sockaddr_in));
 	
 	/* listen on port */
 	listen(sock, 5);
