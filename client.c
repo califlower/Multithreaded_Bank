@@ -90,7 +90,7 @@ int main(int argc, char ** argv)
 	printInstructions();
 	
 	pthread_create(&sendingThread, NULL, sendInput, NULL);
-	pthread_create(&receivingThread, NULL, recieveInput, NULL); // have to add the receiveInput
+	pthread_create(&receivingThread, NULL, recieveInput, NULL); // have to add the receiveInput Function
 	pthread_join(sendingThread,NULL);
 	
 	
