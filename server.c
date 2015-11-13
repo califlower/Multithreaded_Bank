@@ -8,6 +8,7 @@ static int numAcc=0;
 pthread_t thread;
 pthread_mutex_t addLock;
 
+
 /*MAIN CLIENT PROCESS*/
 void * process(void * ptr)
 {
@@ -26,7 +27,37 @@ void * process(void * ptr)
 		
 		if (strcmp(buffer,"3")==0)
 			break;
-		else if (strcmp(buffer,""))
+			
+		else if (strcasecmp(buffer,"open")=0)
+		{
+			read(conn->sock, &len, sizeof(int));
+			buffer[len] = 0;
+			read(conn->sock, buffer, len);
+			
+			int x=addAccount(buffer);
+			
+			if (x=0)
+			{
+				char str[15]= "Account Added"
+				write(conn->sock, str, strlen(str));
+				free(str);
+			}
+			else if (x=1)
+			{
+				char str[15]= "Too many accounts"
+				write(conn->sock, str, strlen(str));
+				free(str);
+			}
+			else
+			{
+				char str[15]= "Account name too large"
+				write(conn->sock, str, strlen(str));
+				free(str);
+			}
+			
+			
+			
+		}
 
 		/* print message */
 		printf("%s\n", buffer);
