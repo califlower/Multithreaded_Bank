@@ -47,10 +47,12 @@ void initConnection(char * inputHost)
 */
 void *recieveInput(void *emptyPtr)
 {
+	
+	int len=1000;
+	char input[1000];
 	while (1)
 	{	
-		int len=1000;
-		char input[1000];	
+	
 
 		/* read length of message */
 

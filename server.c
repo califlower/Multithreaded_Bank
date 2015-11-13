@@ -73,17 +73,24 @@ void * process(void * ptr)
 			if (x==0)
 			{
 				char str[30]= "Account Added";
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, strlen(str));
+
 			}
 			else if (x==1)
 			{
 				char str[30]= "Too many accounts";
-				write(conn->sock, str, strlen(str));
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, len);
 			}
 			else
 			{
 				char str[30]= "Account name too large";
-				write(conn->sock, str, strlen(str));
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, len);
 
 			}
 			
