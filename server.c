@@ -1,31 +1,32 @@
 #include "server.h"
 
-account accountList[20]= {NULL };
-int port=2500;
+/*GLOBAL VARIABLES and STRUCTS*/
+static account accountList[20]= {NULL};
+static int port=2500;
+static int numAcc=0;
 
+pthread_t thread;
+pthread_mutex_t addLock;
+
+/*MAIN CLIENT PROCESS*/
 void * process(void * ptr)
 {
 	char buffer[1000];
 	int len=1000;
-	connection_t * conn;
-
-	if (!ptr) 
-		pthread_exit(0); 
-
-	conn = (connection_t *)ptr;
+	connection_t * conn = (connection_t *) ptr;
 
 	while (1)
 	{
 		/* read length of message */
 		read(conn->sock, &len, sizeof(int));
-	
 		buffer[len] = 0;
-
+		
 		/* read message */
 		read(conn->sock, buffer, len);
 		
 		if (strcmp(buffer,"3")==0)
 			break;
+		else if (strcmp(buffer,""))
 
 		/* print message */
 		printf("%s\n", buffer);
@@ -39,8 +40,34 @@ void * process(void * ptr)
 
 }
 
-void addAccount(char * name)
+/* Return 0 if Sucess, Return 1 if too many accounts, return 2 if accountname too large*/
+int addAccount(char * name)
 {
+	pthread_mutex_lock(&addLock);
+	
+	if (numAcc>=20)
+	{
+		pthread_mutex_unlock(&addLock);
+		
+		return 1;	
+	}
+	else if (strlen(name)>100)
+	{
+		pthread_mutex_unlock(&addLock);
+		
+		return 2;
+	}
+	else
+	{
+		account newAccount=malloc(sizeof(struct account));
+		strcpy(newAccount->accountName);
+		newAccount->balance=0;
+		newAccount->inUse=0;
+		numAc++;
+		pthread_mutex_unlock(&addLock);
+		
+		return 0;
+	}
 	
 }
 
@@ -59,10 +86,8 @@ void initConnection()
 {
 	int sock;
 	struct sockaddr_in address;
-	
-	
+	pthread_mutex_init(&addLock, NULL);
 	connection_t * connection;
-	pthread_t thread;
 
 	/* create socket */
 	sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -73,11 +98,7 @@ void initConnection()
 	address.sin_addr.s_addr = INADDR_ANY;
 	address.sin_port = htons(port);
 
-	if(bind(sock, (struct sockaddr *)&address, sizeof(struct sockaddr_in)) < 0)
-	{
-		printf("Error in Binding!");
-		exit(0);
-	}
+	bind(sock, (struct sockaddr *)&address, sizeof(struct sockaddr_in)) < 0);
 	
 	/* listen on port */
 	listen(sock, 5);
@@ -90,6 +111,7 @@ void initConnection()
 		/* accept incoming connections */
 		connection = (connection_t *)malloc(sizeof(connection_t));
 		connection->sock = accept(sock, &connection->address, &connection->addr_len);
+		
 		if (connection->sock <= 0)
 		{
 			free(connection);
