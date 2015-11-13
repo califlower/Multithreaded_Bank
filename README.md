@@ -9,6 +9,6 @@ it's running on.
 
 As of now, only inputting localhost will work
 
-**Server**
+***Server***
 
 This is a command line program that takes no arguments. Simply run it, and then keep it in the background
