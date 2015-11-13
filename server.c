@@ -2,12 +2,11 @@
 
 account accountList[20]= {NULL };
 int port=2500;
-int len=1000;
 
 void * process(void * ptr)
 {
 	char buffer[1000];
-	
+	int len=1000;
 	connection_t * conn;
 
 	if (!ptr) 
@@ -15,10 +14,8 @@ void * process(void * ptr)
 
 	conn = (connection_t *)ptr;
 
-	
 	while (1)
 	{
-
 		/* read length of message */
 		read(conn->sock, &len, sizeof(int));
 	
