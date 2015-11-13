@@ -17,6 +17,10 @@ void printInstructions()
 
 }
 
+/*
+	Creates the client connection to the specified server
+	Runs in main thread
+*/
 void initConnection(char * inputHost)
 {
 	struct sockaddr_in address;
@@ -36,6 +40,11 @@ void initConnection(char * inputHost)
 
 }
 
+/*
+	Sits and waits for an input, sits in its own thread.
+	Need to implement a way for the server to send a shutdown signal
+	to the client
+*/
 void *recieveInput(void *emptyPtr)
 {
 	while (1)
@@ -58,6 +67,12 @@ void *recieveInput(void *emptyPtr)
 	return NULL;
 }
 
+/*
+	Waits for a client input to send to the server
+	Sits in its own thread waiting. Exits if 3 is inputted
+	Also closes the thread in the server
+*/
+
 void *sendInput(void *emptyPtr)
 {
 	int len;
@@ -78,6 +93,11 @@ void *sendInput(void *emptyPtr)
 
 }
 
+/*
+	Exits the server process when the terminal
+	gets closed so that it doesnt get stuck in its
+	stupid loop forever and ever and keep printing stuff.
+*/
 void exitHandler(int signum)
 {
 	char input[5]="3";
