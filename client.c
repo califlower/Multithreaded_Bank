@@ -58,13 +58,33 @@ void *sendInput(void *emptyPtr)
 
 }
 
+void exitHandler(int signum)
+{
+	char input[5]="3";
+	int len= strlen(input);
+
+	if (sock!=-1)
+	{
+		write(sock, &len, sizeof(int));
+		write(sock, input, len);
+	}
+	
+
+
+	
+	
+	
+}
+
 int main(int argc, char ** argv)
 {
 	/*pthread_t rThread;*/
 	pthread_t sThread;
-	
+	signal(SIGHUP, exitHandler);
+
 	initConnection(argv[1]);
 	printInstructions();
+
 	pthread_create(&sThread, NULL, sendInput, NULL);
 	pthread_join(sThread,NULL);
 	
