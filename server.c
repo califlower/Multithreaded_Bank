@@ -13,8 +13,31 @@ static int port				=pNum;
 static int numAcc			=0;
 
 pthread_t 				thread;
+pthread_t				lThread;
 pthread_mutex_t 			addLock;
 pthread_mutex_t 			startLock;
+
+/**************************
+ * Print list of all account every 20 seconds
+ * Happens in a seperate thread
+***************************/
+
+void *printAccounts(void *emptyPtr)
+{
+	while (1)
+	{
+		int i=0;
+		for (i=0;(i<numAcc && accountList[i]!=NULL);i++)
+		{
+			printf("%s\n", accountList[i]->accountName);
+			printf("        %f\n", accountList[i]->balance);
+			(accountList[i]->inUse=1) ? printf("        IN SESSION"):printf("        NOT IN SESSION");
+		}
+		
+		sleep(20000);
+	}
+	return NULL
+}
 
 
 /***************************
@@ -367,8 +390,10 @@ void initConnection()
 {
 	int sock;
 	struct sockaddr_in address;
+	
 	pthread_mutex_init(&addLock, NULL);
 	pthread_mutex_init(&startLock, NULL);
+	
 	connection_t * connection;
 
 	/* create socket */
@@ -387,6 +412,9 @@ void initConnection()
 
 
 	printf("Now Accepting Incoming Client Connections...\n");
+	
+	pthread_create(&LThread, NULL);
+	pthread_detach(Lthread);
 	
 	listenConnection(connection, sock);
 	
