@@ -26,7 +26,7 @@ or
 
 *open*
 
-*accountname* or as two commands
+*accountname*  as two commands
 
 
 **start**
