@@ -221,6 +221,37 @@ void * process(void * ptr)
 				write(conn->sock, str, strlen(str));
 			}
 		}
+		
+		else if (strcasecmp(buffer,"debit")==0)
+		{
+			read(conn->sock, &len, sizeof(int));
+			buffer[len] = 0;
+			read(conn->sock, buffer, len);
+			
+			int x=creditAccount(strtof(buffer));
+			
+			if (x==0)
+			{
+				char str[strSize];
+				snprintf(str, sizeof(str), "Account debited -", buffer);
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, strlen(str));
+
+			}
+			else if (x==1)
+			{
+				char str[strSize]= "Cannot debit. Not enough money in account";
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, strlen(str));
+
+			}
+			
+			
+			
+			
+		}
 			
 			
 
