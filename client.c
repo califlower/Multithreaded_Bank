@@ -11,10 +11,13 @@ void printInstructions()
 	printf("Welcome to Your Online Bank\n");
 	printf("-----------------------------\n");
 	printf("Options\n");
-	printf("1: Open\n");
-	printf("2: Start\n");
-	printf("3: Exit\n");
-
+	printf("open   <account name> to open a new account\n");
+	printf("start  <account name> to start a new account session\n");
+	printf("credit <amount> to credit an account that was opened\n");
+	printf("debit  <amount> to debit an account that was opened\n");
+	printf("finish to finish your session\n");
+	printf("-----------------------------\n");
+	printf("\n");
 }
 
 /*
@@ -109,7 +112,8 @@ void exitHandler(int signum)
 	{
 		write(sock, &len, sizeof(int));
 		write(sock, input, len);
-	}	
+	}
+	exit(0);	
 }
 
 int main(int argc, char ** argv)
@@ -118,8 +122,10 @@ int main(int argc, char ** argv)
 	pthread_t sThread;
 
 	signal(SIGHUP, exitHandler);
+	signal(SIGINT, exitHandler);
+	
+	(argc==2) ? initConnection(argv[1]): initConnection("localhost");
 
-	initConnection(argv[1]);
 	printInstructions();
 
 	pthread_create(&sThread, NULL, sendInput, NULL);
