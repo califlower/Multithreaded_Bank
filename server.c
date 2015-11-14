@@ -131,7 +131,7 @@ void creditAccount(int id, float amount)
 ******************************/
 void * process(void * ptr)
 {
-	char * accountName;
+	char * accountName=NULL;
 	int accountId;
 	
 	char buffer[strSize];
@@ -159,6 +159,14 @@ void * process(void * ptr)
 			read(conn->sock, &len, sizeof(int));
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
+
+			if (strcmp(buffer,"finish")==0)
+			{
+				if (accountName)
+					accountList[accountId]->inUse=0;
+				break;
+			}
+			
 			
 			int x=addAccount(buffer);
 			
@@ -191,6 +199,13 @@ void * process(void * ptr)
 			read(conn->sock, &len, sizeof(int));
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
+
+			if (strcmp(buffer,"finish")==0)
+			{
+				if (accountName)
+					accountList[accountId]->inUse=0;
+				break;
+			}
 			
 			int x=startAccount(buffer);
 			
@@ -224,9 +239,26 @@ void * process(void * ptr)
 		
 		else if (strcasecmp(buffer,"debit")==0)
 		{
+			if (!accountName)
+			{
+				char str[strSize]= "No account session started";
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, strlen(str));
+				continue;
+
+			}
+
 			read(conn->sock, &len, sizeof(int));
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
+
+			if (strcmp(buffer,"finish")==0)
+			{
+				if (accountName)
+					accountList[accountId]->inUse=0;
+				break;
+			}
 			
 			int x=debitAccount(accountId,atof(buffer));
 			
@@ -252,9 +284,27 @@ void * process(void * ptr)
 		}
 		else if (strcasecmp(buffer,"credit")==0)
 		{
+
+			if (!accountName)
+			{
+				char str[strSize]= "No account session started";
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, strlen(str));
+				continue;
+
+			}
+
 			read(conn->sock, &len, sizeof(int));
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
+
+			if (strcmp(buffer,"finish")==0)
+			{
+				if (accountName)
+					accountList[accountId]->inUse=0;
+				break;
+			}
 			
 			creditAccount(accountId,atof(buffer));
 			char str[strSize];	
