@@ -21,6 +21,25 @@ void printInstructions()
 }
 
 /*
+	Exits the server process when the terminal
+	gets closed so that it doesnt get stuck in its
+	stupid loop forever and ever and keep printing stuff.
+*/
+void exitHandler()
+{
+	char input[1000]="finish";
+	int len= strlen(input);
+
+	if (sock!=-1)
+	{
+		write(sock, &len, sizeof(int));
+		write(sock, input, len);
+	}
+	exit(0);	
+}
+
+
+/*
 	Creates the client connection to the specified server
 	Runs in main thread
 */
@@ -65,8 +84,15 @@ void *recieveInput(void *emptyPtr)
 		/* read message */
 		read(sock, input, len);
 		
+		if (strcmp(input, "finish")==0)
+		{
+			exitHandler();
+		}
+
 		/* print message */
 		printf("%s\n", input);
+
+		
 	}
 
 	return NULL;
@@ -90,31 +116,16 @@ void *sendInput(void *emptyPtr)
 		write(sock, &len, sizeof(int));
 		write(sock, input, len);
 
-		if (strcmp(input, "3")==0)
-			break;
+		if (strcmp(input, "finish")==0)
+		{
+			exitHandler();
+		}
 	}
 
 	return NULL;
 
 }
 
-/*
-	Exits the server process when the terminal
-	gets closed so that it doesnt get stuck in its
-	stupid loop forever and ever and keep printing stuff.
-*/
-void exitHandler(int signum)
-{
-	char input[5]="3";
-	int len= strlen(input);
-
-	if (sock!=-1)
-	{
-		write(sock, &len, sizeof(int));
-		write(sock, input, len);
-	}
-	exit(0);	
-}
 
 int main(int argc, char ** argv)
 {

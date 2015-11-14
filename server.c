@@ -91,7 +91,7 @@ int startAccount(char * name)
 				pthread_mutex_unlock(&startLock);
 				return -2;
 			}
-;
+
 		}
 	
 	}
@@ -102,7 +102,7 @@ int startAccount(char * name)
 /*MAIN CLIENT PROCESS*/
 void * process(void * ptr)
 {
-	char * accountname;
+	char * accountName;
 	int accountId;
 	
 	char buffer[strSize];
@@ -119,9 +119,12 @@ void * process(void * ptr)
 		/* read message */
 		read(conn->sock, buffer, len);
 		
-		if (strcmp(buffer,"3")==0)
+		if (strcmp(buffer,"finish")==0)
+		{
+			if (accountName)
+				accountList[accountId]->inUse=0;
 			break;
-			
+		}
 		else if (strcasecmp(buffer,"open")==0)
 		{
 			read(conn->sock, &len, sizeof(int));
@@ -154,6 +157,43 @@ void * process(void * ptr)
 
 			}
 		}
+		else if (strcasecmp(buffer,"start")==0)
+		{
+			read(conn->sock, &len, sizeof(int));
+			buffer[len] = 0;
+			read(conn->sock, buffer, len);
+			
+			int x=startAccount(buffer);
+			
+			if (x==-1)
+			{
+				char str[strSize]= "Account does not exist";
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, strlen(str));
+
+			}
+			else if (x==-2)
+			{
+				char str[strSize]= "Account in use";
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, strlen(str));
+
+			}
+			else
+			{
+				char str[strSize]= "Started session with account name : ";
+				strcat(str, accountList[x]->accountName);
+				accountId=x;
+				accountName=accountList[x]->accountName;
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, strlen(str));
+			}
+		}
+			
+			
 
 		/* print message */
 		printf("%s\n", buffer);
