@@ -78,13 +78,17 @@ int startAccount(char * name)
 		}
 		else if (strcasecmp(name, accountList[i]->accountName)==0)
 		{
-			if (accountList->inUSe==0)
+			pthread_mutex_lock(&startLock);
+			
+			if (accountList->inUse==0)
 			{
 				accountList[i]->inUse=1;
+				pthread_mutex_unlock(&startLock);
 				return i
 			}
 			else
 			{
+				pthread_mutex_unlock(&startLock);
 				return -2;
 			}
 ;
@@ -211,6 +215,7 @@ void initConnection()
 	int sock;
 	struct sockaddr_in address;
 	pthread_mutex_init(&addLock, NULL);
+	pthread_mutex_init(&startLock, NULL);
 	connection_t * connection;
 
 	/* create socket */
