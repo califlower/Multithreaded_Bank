@@ -6,6 +6,11 @@
 #include <unistd.h>
 #include <string.h>
 
+#define pNum 2500
+#define maxAcc 20
+#define strSize 1000
+#define maxName 100
+
 typedef struct
 {
 	int sock;
@@ -17,7 +22,7 @@ typedef struct
 
 typedef struct
 {
-	char accountName[100];
+	char accountName[maxName];
 	float balance;
 	int inUse;
 } account;
