@@ -27,7 +27,7 @@ void printInstructions()
 */
 void exitHandler()
 {
-	char input[1000]="finish";
+	char input[strSize]="finish";
 	int len= strlen(input);
 
 	if (sock!=-1)
@@ -70,8 +70,8 @@ void initConnection(char * inputHost)
 void *recieveInput(void *emptyPtr)
 {
 	
-	int len=1000;
-	char input[1000];
+	int len=strSize;
+	char input[strSize];
 	while (1)
 	{	
 	
@@ -107,7 +107,7 @@ void *recieveInput(void *emptyPtr)
 void *sendInput(void *emptyPtr)
 {
 	int len;
-	char input[1000];
+	char input[strSize];
 
 	while (1)
 	{
