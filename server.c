@@ -176,6 +176,27 @@ void creditAccount(char *account, float amount)
 	
 }
 
+void listenConnection(connection_t * connection)
+{
+	while (1)
+	{
+		/* accept incoming connections */
+		connection = (connection_t *)malloc(sizeof(connection_t));
+		connection->sock = accept(sock, &connection->address, &connection->addr_len);
+		
+		if (connection->sock <= 0)
+		{
+			free(connection);
+		}
+		else
+		{
+			/* start a new thread but do not wait for it */
+			pthread_create(&thread, 0, process, (void *)connection);
+			pthread_detach(thread);
+		}
+	}
+}
+
 void initConnection()
 {
 	int sock;
@@ -200,25 +221,9 @@ void initConnection()
 
 	printf("Now Accepting Incoming Client Connections...\n");
 	
-	while (1)
-	{
-		/* accept incoming connections */
-		connection = (connection_t *)malloc(sizeof(connection_t));
-		connection->sock = accept(sock, &connection->address, &connection->addr_len);
-		
-		if (connection->sock <= 0)
-		{
-			free(connection);
-		}
-		else
-		{
-			/* start a new thread but do not wait for it */
-			pthread_create(&thread, 0, process, (void *)connection);
-			pthread_detach(thread);
-		}
-	}
+	listenConnection(connection);
 	
-	return;
+
 }
 
 int main(int argc, char ** argv)
