@@ -20,10 +20,10 @@ Accounts get deleted on server closing.
 
 You can either type 
 
-*open <accountname>* together as one command
+*open accountname* together as one command
 or
 *open*
-*<accountname>* or as two commands
+*accountname* or as two commands
 
 
 **start**
