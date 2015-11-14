@@ -98,8 +98,37 @@ int startAccount(char * name)
 	
 	return -1;
 }
+/**************
+ * removes money from an account
+ * Returns 0 if sucess
+ * Returns 1 if it would go below zero with a credit amount
+************/
+int debitAccount(int id, float amount)
+{
+	
+	if ((accountList[id]->balance-amount)<=0)
+		return 1
+	else
+	{
+		accountList[id]->balance-=amount;
+		return 0;
+	}
+}
 
-/*MAIN CLIENT PROCESS*/
+/***********
+ * Adds money to an account
+***********/
+void creditAccount(int id, float amount)
+{
+	accountList[id]->balance+=amount;
+}
+
+/*****************************
+ * Client process. Handles inputs and then decides what to do based on the input
+ * Each client gets one thread
+ * Not super complicated
+ * Each client process gets its own accountName and ID
+******************************/
 void * process(void * ptr)
 {
 	char * accountName;
@@ -208,17 +237,6 @@ void * process(void * ptr)
 }
 
 
-
-void debitAccount(char *account, float amount)
-{
-	
-}
-
-
-void creditAccount(char *account, float amount)
-{
-	
-}
 
 /*****************
  * Sits and listens for incoming client connections
