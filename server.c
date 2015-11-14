@@ -2,17 +2,29 @@
 
 
 /*GLOBAL VARIABLES and STRUCTS*/
-static account *accountList[maxAcc]= {NULL};
-static int port=pNum;
-static int numAcc=0;
+/******************************
+ * accountList holds accounts
+ * port is a gloabl variable for the Server Port, can be modified in server.h
+ * numAcc holds the total number of accounts in the system
+******************************/
 
-pthread_t thread;
-pthread_mutex_t addLock;
+static account *accountList[maxAcc]	={NULL};
+static int port				=pNum;
+static int numAcc			=0;
+
+pthread_t 				thread;
+pthread_mutex_t 			addLock;
+pthread_mutex_t 			startLock;
 
 
+/***************************
+ 	Adds an Account to the AccountList Array
+ 	Contains a mutex Lock, function is strictly sequential
+	Return 0 if Sucess 
+	Return 1 if too many accounts
+	return 2 if accountname too large
+**************************/
 
-
-/* Return 0 if Sucess, Return 1 if too many accounts, return 2 if accountname too large*/
 int addAccount(char * name)
 {
 	pthread_mutex_lock(&addLock);
@@ -37,6 +49,7 @@ int addAccount(char * name)
 		newAccount->inUse=0;
 		accountList[numAcc]=newAccount;
 		numAcc++;
+		
 		pthread_mutex_unlock(&addLock);
 		
 		return 0;
@@ -44,7 +57,15 @@ int addAccount(char * name)
 	
 }
 
-//return -1 if no account, else return index number
+/*************************
+ * Starts an account session
+ * Return -2 if account is already open
+ * return -1 if account does not exist
+ * return index number of account if it exists and isnt open
+ * mutex lock on checking if an account is inUse so two threads dont try to modify the variable at the same time
+ * mutex lock not on the search itself so two threads can still search seperatly
+****************************/
+
 int startAccount(char * name)
 {
 	int i=0;
@@ -55,15 +76,20 @@ int startAccount(char * name)
 		{
 			return -1;
 		}
-		else if (strcasecmp(name, accountList[i]->accountName)==0 && (accountList[i]->inUse==0))
+		else if (strcasecmp(name, accountList[i]->accountName)==0)
 		{
-			accountList[i]->inUse=1;
-			return i;
+			if (accountList->inUSe==0)
+			{
+				accountList[i]->inUse=1;
+				return i
+			}
+			else
+			{
+				return -2;
+			}
+;
 		}
-		else if (strcasecmp(name, accountList[i]->accountName)==0 && (accountList[i]->inUse==1))
-		{
-			return -2;
-		}
+	
 	}
 	
 	return -1;
