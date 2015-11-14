@@ -57,6 +57,7 @@ int startAccount(char * name)
 		}
 		else if (strcasecmp(name, accountList[i]->accountName)==0)
 		{
+			accountList[i]->inUse=1;
 			return i;
 		}
 	}
