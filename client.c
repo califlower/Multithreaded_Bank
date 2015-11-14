@@ -111,7 +111,8 @@ void *sendInput(void *emptyPtr)
 
 	while (1)
 	{
-		scanf("%s", (char *)&input);	
+		scanf("%s", (char *)&input);
+		sleep(2000);
 		len = strlen(input);
 		write(sock, &len, sizeof(int));
 		write(sock, input, len);
