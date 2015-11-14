@@ -80,11 +80,11 @@ int startAccount(char * name)
 		{
 			pthread_mutex_lock(&startLock);
 			
-			if (accountList->inUse==0)
+			if (accountList[i]->inUse==0)
 			{
 				accountList[i]->inUse=1;
 				pthread_mutex_unlock(&startLock);
-				return i
+				return i;
 			}
 			else
 			{
