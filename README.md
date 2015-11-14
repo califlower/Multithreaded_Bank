@@ -24,7 +24,7 @@ Accounts get deleted on server closing.
 
 Removes money from an account. 
 
-**credit
+**credit**
 
 Credits money to an ccount
 
