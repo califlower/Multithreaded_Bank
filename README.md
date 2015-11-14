@@ -14,6 +14,8 @@ As of now, only inputting localhost will work
 This is a command line program that takes no arguments. Simply run it, and then keep it in the background
 
 **open**
+Starts a new account. Account name must be under 100 characters. You cannot have more than 20 accounts at any one time
+Accounts get deleted on server closing.
 
 **start**
 
