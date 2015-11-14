@@ -1,4 +1,4 @@
-#include "server.h"
+#include "client_server.h"
 
 
 /*GLOBAL VARIABLES and STRUCTS*/
