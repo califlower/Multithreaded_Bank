@@ -107,7 +107,7 @@ int debitAccount(int id, float amount)
 {
 	
 	if ((accountList[id]->balance-amount)<=0)
-		return 1
+		return 1;
 	else
 	{
 		accountList[id]->balance-=amount;
@@ -228,12 +228,13 @@ void * process(void * ptr)
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
 			
-			int x=creditAccount(strtof(buffer));
+			int x=debitAccount(atof(buffer),accountId);
 			
 			if (x==0)
 			{
 				char str[strSize];
-				snprintf(str, sizeof(str), "Account debited -", buffer);
+				
+				snprintf(str, sizeof(str), "Account debited -%f", atof(buffer));
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, strlen(str));
