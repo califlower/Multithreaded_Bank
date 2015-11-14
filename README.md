@@ -15,6 +15,7 @@ This is a command line program that takes no arguments. Simply run it, and then 
 
 **open**
 
+------------------------------------------
 Starts a new account. Account name must be under 100 characters. You cannot have more than 20 accounts at any one time
 Accounts get deleted on server closing.
 
@@ -31,7 +32,7 @@ or
 
 **start**
 
-
+--------------------------------------
 Starts an account session for a client. Can only start one account session per client per account
 
 You can either type 
@@ -48,13 +49,16 @@ or
 
 **debit**
 
+---------------------------------------
 Removes money from an account. 
 
 **credit**
 
+----------------------------------------
 Credits money to an account
 
 **finish**
 
+---------------------------------------
 Finishes the session cleanly and exits all threads. Better than closing the terminal though
 there is a signal handler that should handle closing a terminal unexpectedly and other things like Control C
