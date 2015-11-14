@@ -1,8 +1,12 @@
 #include "server.h"
+#define pNum 2500
+#define maxAcc 20
+#define strSize 1000
+#define maxName 100
 
 /*GLOBAL VARIABLES and STRUCTS*/
-static account *accountList[20]= {NULL};
-static int port=2500;
+static account *accountList[maxAcc]= {NULL};
+static int port=pNum;
 static int numAcc=0;
 
 pthread_t thread;
@@ -16,13 +20,13 @@ int addAccount(char * name)
 {
 	pthread_mutex_lock(&addLock);
 	
-	if (numAcc>=20)
+	if (numAcc>=maxAcc)
 	{
 		pthread_mutex_unlock(&addLock);
 		
 		return 1;	
 	}
-	else if (strlen(name)>100)
+	else if (strlen(name)>maxName)
 	{
 		pthread_mutex_unlock(&addLock);
 		
@@ -43,11 +47,35 @@ int addAccount(char * name)
 	
 }
 
+//return -1 if no account, else return index number
+int startAccount(char * name)
+{
+	int i=0;
+	
+	for (i=0; i<maxAcc; i++)
+	{
+		if (!accountList[i])
+		{
+			return -1;
+		}
+		else if (strcasecmp(name, accountList[i]->accountName)==0)
+		{
+			return i;
+		}
+	}
+	
+	return -1;
+}
+
 /*MAIN CLIENT PROCESS*/
 void * process(void * ptr)
 {
-	char buffer[1000];
-	int len=1000;
+	char * accountname;
+	int accountId;
+	
+	char buffer[strSize];
+	int len=strSize;
+	
 	connection_t * conn = (connection_t *) ptr;
 
 	while (1)
@@ -72,7 +100,7 @@ void * process(void * ptr)
 			
 			if (x==0)
 			{
-				char str[30]= "Account Added";
+				char str[strSize]= "Account Added";
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, strlen(str));
@@ -80,22 +108,19 @@ void * process(void * ptr)
 			}
 			else if (x==1)
 			{
-				char str[30]= "Too many accounts";
+				char str[strSize]= "Too many accounts";
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, len);
 			}
 			else
 			{
-				char str[30]= "Account name too large";
+				char str[strSize]= "Account name too large";
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, len);
 
 			}
-			
-			
-			
 		}
 
 		/* print message */
