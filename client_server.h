@@ -5,6 +5,9 @@
 #include 			<netinet/in.h>
 #include 			<unistd.h>
 #include 			<string.h>
+#include 			<netdb.h>
+#include 			<signal.h>
+
 
 /*****************************
  * pNum is the port number of the server
