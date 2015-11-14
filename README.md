@@ -31,6 +31,21 @@ or
 
 **start**
 
+
+Starts an account session for a client. Can only start one account session per client per account
+
+You can either type 
+
+*start accountname* together as one command
+
+or
+
+*start*
+
+*accountname*  as two commands
+
+
+
 **debit**
 
 Removes money from an account. 
