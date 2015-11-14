@@ -55,10 +55,14 @@ int startAccount(char * name)
 		{
 			return -1;
 		}
-		else if (strcasecmp(name, accountList[i]->accountName)==0)
+		else if (strcasecmp(name, accountList[i]->accountName)==0 && (accountList[i]->inUse==0))
 		{
 			accountList[i]->inUse=1;
 			return i;
+		}
+		else if (strcasecmp(name, accountList[i]->accountName)==0 && (accountList[i]->inUse==1))
+		{
+			return -2;
 		}
 	}
 	
