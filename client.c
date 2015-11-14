@@ -1,4 +1,4 @@
-#include "client.h"
+#include "client_server.h"
 
 int port=2500;
 int sock = -1;
