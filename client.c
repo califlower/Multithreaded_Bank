@@ -1,6 +1,6 @@
 #include "client_server.h"
 
-int port=2500;
+int port=pNum;
 int sock = -1;
 
 
