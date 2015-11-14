@@ -18,6 +18,14 @@ This is a command line program that takes no arguments. Simply run it, and then 
 Starts a new account. Account name must be under 100 characters. You cannot have more than 20 accounts at any one time
 Accounts get deleted on server closing.
 
+You can either type 
+
+*open <accountname>* together as one command
+or
+*open*
+*<accountname>* or as two commands
+
+
 **start**
 
 **debit**
@@ -26,7 +34,7 @@ Removes money from an account.
 
 **credit**
 
-Credits money to an ccount
+Credits money to an account
 
 **finish**
 
