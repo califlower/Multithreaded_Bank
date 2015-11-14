@@ -106,7 +106,7 @@ int startAccount(char * name)
 int debitAccount(int id, float amount)
 {
 	
-	if ((accountList[id]->balance-amount)<=0)
+	if ((accountList[id]->balance)-amount<0)
 		return 1;
 	else
 	{
@@ -228,7 +228,7 @@ void * process(void * ptr)
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
 			
-			int x=debitAccount(atof(buffer),accountId);
+			int x=debitAccount(accountId,atof(buffer));
 			
 			if (x==0)
 			{
@@ -249,7 +249,20 @@ void * process(void * ptr)
 
 			}
 			
+		}
+		else if (strcasecmp(buffer,"credit")==0)
+		{
+			read(conn->sock, &len, sizeof(int));
+			buffer[len] = 0;
+			read(conn->sock, buffer, len);
 			
+			creditAccount(accountId,atof(buffer));
+			char str[strSize];	
+			snprintf(str, sizeof(str), "Account credited +%f", atof(buffer));
+			len=strlen(str);
+			write(conn->sock, &len, sizeof(int));
+			write(conn->sock, str, strlen(str));
+
 			
 			
 		}
