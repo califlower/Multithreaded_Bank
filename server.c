@@ -176,7 +176,12 @@ void creditAccount(char *account, float amount)
 	
 }
 
-void listenConnection(connection_t * connection)
+/*****************
+ * Sits and listens for incoming client connections
+ * Starts a client thread on every connection
+ * ADD AN EXIT CONDITION AT SOME POINT
+*********************/
+void listenConnection(connection_t * connection, int sock)
 {
 	while (1)
 	{
@@ -196,6 +201,10 @@ void listenConnection(connection_t * connection)
 		}
 	}
 }
+
+/******************
+ * Starts the server connection
+******************/
 
 void initConnection()
 {
@@ -221,7 +230,7 @@ void initConnection()
 
 	printf("Now Accepting Incoming Client Connections...\n");
 	
-	listenConnection(connection);
+	listenConnection(connection, sock);
 	
 
 }
