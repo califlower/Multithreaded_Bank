@@ -1,8 +1,5 @@
 #include "server.h"
-#define pNum 2500
-#define maxAcc 20
-#define strSize 1000
-#define maxName 100
+
 
 /*GLOBAL VARIABLES and STRUCTS*/
 static account *accountList[maxAcc]= {NULL};
