@@ -11,6 +11,7 @@
 static account *accountList[maxAcc]	={NULL};
 static int port				=pNum;
 static int numAcc			=0;
+static int sock=			-1;
 
 pthread_t 				thread;
 pthread_t				lThread;
@@ -27,18 +28,33 @@ void *printAccounts(void *emptyPtr)
 	while (1)
 	{
 		int i=0;
+		printf("---------------------------------------\n");
 		for (i=0;(i<numAcc && accountList[i]!=NULL);i++)
 		{
 			printf("%s\n", accountList[i]->accountName);
 			printf("        %f\n", accountList[i]->balance);
-			(accountList[i]->inUse=1) ? printf("        IN SESSION"):printf("        NOT IN SESSION");
+			(accountList[i]->inUse==1) ? printf("        IN SESSION\n"):printf("        NOT IN SESSION\n");
 		}
 		
-		sleep(20000);
+		printf("----------------------------------------\n");
+		sleep(20);
 	}
-	return NULL
+	return NULL;
 }
 
+void exitHandler()
+{
+	char input[strSize]="finish";
+	int len= strlen(input);
+
+	if (sock!=-1)
+	{
+		write(sock, &len, sizeof(int));
+		write(sock, input, len);
+		close(sock);
+	}
+	exit(0);	
+}
 
 /***************************
  	Adds an Account to the AccountList Array
@@ -340,10 +356,6 @@ void * process(void * ptr)
 			
 		}
 			
-			
-
-		/* print message */
-		printf("%s\n", buffer);
 		
 	}
 
@@ -388,11 +400,15 @@ void listenConnection(connection_t * connection, int sock)
 
 void initConnection()
 {
-	int sock;
+	
 	struct sockaddr_in address;
 	
 	pthread_mutex_init(&addLock, NULL);
 	pthread_mutex_init(&startLock, NULL);
+
+
+	signal(SIGHUP, exitHandler);
+	signal(SIGINT, exitHandler);
 	
 	connection_t * connection;
 
@@ -413,8 +429,8 @@ void initConnection()
 
 	printf("Now Accepting Incoming Client Connections...\n");
 	
-	pthread_create(&LThread, NULL);
-	pthread_detach(Lthread);
+	pthread_create(&lThread, NULL, printAccounts, NULL);
+	pthread_detach(lThread);
 	
 	listenConnection(connection, sock);
 	
