@@ -355,7 +355,34 @@ void * process(void * ptr)
 			
 			
 		}
+		else if (strcasecmp(buffer, "balance")==0)
+		{
+			if (!accountName)
+			{
+				char str[strSize]= "No account session started";
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, strlen(str));
+				continue;
+			}
+						read(conn->sock, &len, sizeof(int));
+			buffer[len] = 0;
+			read(conn->sock, buffer, len);
+
+			if (strcmp(buffer,"finish")==0)
+			{
+				if (accountName)
+					accountList[accountId]->inUse=0;
+				break;
+			}
+		
+			char str[strSize];
+			snprintf(str, sizeof(str), "Total Balance of Account: %f", accountList[accountId]->balance);
+			len=strlen(str);
+			write(conn->sock, &len, sizeof(int));
+			write(conn->sock, str, strlen(str));
 			
+		}
 		
 	}
 
