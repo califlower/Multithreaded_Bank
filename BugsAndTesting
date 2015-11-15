@@ -3,7 +3,6 @@
   - Timing (Takes to long to run things) - BUG 
   - Try testing for a lot of threads open, even going above 20, see what happens.
   - Allow for Full Name bank accounts (currently only allows for one word, A full bank first and last name would be ideal)
-  - *not really a bug but i think its a good idea to have* 
-    - Add a total amount option to see the balance in the bank account (rather than waiting 20 seconds).
+  - **When closing server, clients should stop running as well**
   
   .. nothing else yet, will look
