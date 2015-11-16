@@ -94,6 +94,7 @@ void *recieveInput(void *emptyPtr)
 		if (strcmp(input, "finish")==0)
 		{
 			exitHandler();
+			pthread_exit(0);
 		}
 
 		/* print message */
