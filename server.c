@@ -365,7 +365,7 @@ void * process(void * ptr)
 				write(conn->sock, str, strlen(str));
 				continue;
 			}
-						read(conn->sock, &len, sizeof(int));
+			read(conn->sock, &len, sizeof(int));
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
 
