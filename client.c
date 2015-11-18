@@ -1,8 +1,8 @@
 #include "client_server.h"
 
-int port=pNum;
-int sock = -1;
-
+int port		=pNum;
+int sock 		= -1;
+sigset_t		mask;
 /****************
  * Prints the instructions for using the bank
 ****************/
@@ -43,6 +43,11 @@ void exitHandler()
 	}
 	exit(0);	
 }
+void alarmHandler()
+{
+	alarm(2);
+	signal(SIGALARM, alarm);
+}
 
 
 /*******************
@@ -76,15 +81,13 @@ void initConnection(char * inputHost)
 ***************************/
 void *recieveInput(void *emptyPtr)
 {
-	
 	int len=strSize;
 	char input[strSize];
+	
 	while (1)
 	{	
-	
-
 		/* read length of message */
-
+		
 		read(sock, &len, sizeof(int));
 		input[len] = 0;
 
@@ -96,9 +99,10 @@ void *recieveInput(void *emptyPtr)
 			exitHandler();
 			pthread_exit(0);
 		}
-
+		sigsuspend(&mask);
 		/* print message */
 		printf("%s\n", input);
+		
 
 		
 	}
@@ -151,6 +155,11 @@ int main(int argc, char ** argv)
 
 	signal(SIGHUP, exitHandler);
 	signal(SIGINT, exitHandler);
+	
+	alarmHandler();
+	
+	sigfillset(&mask);
+	sigdelset(&mask,SIGALARM);
 	
 	(argc==2) ? initConnection(argv[1]): initConnection("localhost");
 
