@@ -156,10 +156,11 @@ int main(int argc, char ** argv)
 	signal(SIGHUP, exitHandler);
 	signal(SIGINT, exitHandler);
 	
-	alarmHandler();
+	
 	
 	sigfillset(&mask);
 	sigdelset(&mask,SIGALARM);
+	alarmHandler();
 	
 	(argc==2) ? initConnection(argv[1]): initConnection("localhost");
 
