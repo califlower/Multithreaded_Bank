@@ -119,16 +119,13 @@ void *sendInput(void *emptyPtr)
 {
 	int len;
 	char input[strSize];
-	struct timespec timer;
-	timer.tv_sec = 2;
-	timer.tv_nano = 0;
 
 	while (1)
 	{
 		scanf("%s", (char *)&input);
 		
 		len = strlen(input);
-		nanosleep(&timer, NULL);
+
 		write(sock, &len, sizeof(int));
 		write(sock, input, len);
 
