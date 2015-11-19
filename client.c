@@ -2,7 +2,7 @@
 
 int port		=pNum;
 int sock 		= -1;
-sigset_t		mask;
+
 /****************
  * Prints the instructions for using the bank
 ****************/
@@ -43,11 +43,7 @@ void exitHandler()
 	}
 	exit(0);	
 }
-void alarmHandler()
-{
-	alarm(2);
-	signal(SIGALARM, alarm);
-}
+
 
 
 /*******************
@@ -99,7 +95,7 @@ void *recieveInput(void *emptyPtr)
 			exitHandler();
 			pthread_exit(0);
 		}
-		sigsuspend(&mask);
+		
 		/* print message */
 		printf("%s\n", input);
 		
@@ -156,12 +152,6 @@ int main(int argc, char ** argv)
 	signal(SIGHUP, exitHandler);
 	signal(SIGINT, exitHandler);
 	
-	
-	
-	sigfillset(&mask);
-	sigdelset(&mask,SIGALARM);
-	alarmHandler();
-	
 	(argc==2) ? initConnection(argv[1]): initConnection("localhost");
 
 	printInstructions();
@@ -171,7 +161,6 @@ int main(int argc, char ** argv)
 
 	pthread_join(rThread,NULL);
 	pthread_join(sThread,NULL);
-	
 
 	/* close socket */
 	close(sock);
