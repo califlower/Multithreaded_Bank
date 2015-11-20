@@ -19,6 +19,16 @@ pthread_mutex_t 			addLock;
 pthread_mutex_t 			startLock;
 sem_t 					semaphore;
 
+/*********************
+ * Handles printing every 20 seconds
+ * Contains the semaphore unlock after 20 seconds
+*******************/
+
+void alarmHandler()
+{
+	sem_post(&semaphore);
+}
+
 /**************************
  * Print list of all account every 20 seconds
  * Happens in a seperate thread
@@ -28,6 +38,10 @@ void *printAccounts(void *emptyPtr)
 {
 	while (1)
 	{
+		signal(SIGALRM, alarmHandler);
+		alarm(20);
+		sem_wait(&semaphore);
+		
 		int i=0;
 		printf("---------------------------------------\n");
 		for (i=0;(i<numAcc && accountList[i]!=NULL);i++)
@@ -38,7 +52,7 @@ void *printAccounts(void *emptyPtr)
 		}
 		
 		printf("----------------------------------------\n");
-		sleep(20);
+		
 		
 	}
 	return NULL;
