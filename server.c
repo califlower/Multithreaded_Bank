@@ -37,6 +37,7 @@ void *printAccounts(void *emptyPtr)
 		}
 		
 		printf("----------------------------------------\n");
+		sleep(20);
 		
 	}
 	return NULL;
