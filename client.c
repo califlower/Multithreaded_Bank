@@ -19,7 +19,7 @@ void printInstructions()
 	printf("credit <amount> to credit an account that was opened\n");
 	printf("debit  <amount> to debit an account that was opened\n");
 	printf("finish to finish your session\n");
-	printf("balance to print total balance in bank account\n");
+	printf("total to print total balance in bank account\n");
 	printf("-----------------------------\n");
 	printf("\n");
 }
