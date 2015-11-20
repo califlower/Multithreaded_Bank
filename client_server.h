@@ -8,6 +8,7 @@
 #include 			<netdb.h>
 #include 			<signal.h>
 #include 			<time.h>
+#include 			<semaphore.h>
 
 /*****************************
  * pNum is the port number of the server

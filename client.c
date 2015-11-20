@@ -2,6 +2,7 @@
 
 int port		=pNum;
 int sock 		= -1;
+sem_t 			semaphore;
 
 /****************
  * Prints the instructions for using the bank
@@ -43,6 +44,11 @@ void exitHandler()
 	}
 	exit(0);	
 }
+void alarmHandler()
+{
+	sem_post(&semaphore);
+}
+
 
 
 
@@ -95,6 +101,9 @@ void *recieveInput(void *emptyPtr)
 			exitHandler();
 			pthread_exit(0);
 		}
+		signal(SIGALRM, alarmHandler);
+		alarm(2);
+		sem_wait(&semaphore);
 		
 		/* print message */
 		printf("%s\n", input);
@@ -148,6 +157,8 @@ int main(int argc, char ** argv)
 {
 	pthread_t rThread;
 	pthread_t sThread;
+
+	sem_init(&semaphore, 0, 0);
 
 	signal(SIGHUP, exitHandler);
 	signal(SIGINT, exitHandler);
