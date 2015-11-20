@@ -17,6 +17,7 @@ pthread_t 				thread;
 pthread_t				lThread;
 pthread_mutex_t 			addLock;
 pthread_mutex_t 			startLock;
+sem_t 					semaphore;
 
 /**************************
  * Print list of all account every 20 seconds
@@ -433,7 +434,8 @@ void initConnection()
 	
 	pthread_mutex_init(&addLock, NULL);
 	pthread_mutex_init(&startLock, NULL);
-
+	
+	sem_init(&semaphore, 0, 0);
 
 	signal(SIGHUP, exitHandler);
 	signal(SIGINT, exitHandler);
