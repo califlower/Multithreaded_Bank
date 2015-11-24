@@ -60,14 +60,17 @@ void *printAccounts(void *emptyPtr)
 
 void exitHandler()
 {
+	sockNode *iter=head;
 	char input[strSize]="exit";
 	int len= strlen(input);
 
-	if (sock!=-1)
+
+	while (iter)
 	{
-		write(sock, &len, sizeof(int));
-		write(sock, input, len);
-		close(sock);
+		write(iter->sock, &len, sizeof(int));
+		write(iter->sock, input, len);
+		close(iter->sock);
+		iter=iter->next;
 	}
 	exit(0);	
 }
@@ -457,6 +460,11 @@ void listenConnection(connection_t * connection, int sock)
 			/* start a new thread but do not wait for it */
 			pthread_create(&thread, 0, process, (void *)connection);
 			pthread_detach(thread);
+			
+			sockNode *temp=malloc(sizeof(sockNode));
+			temp->sock=connection->sock;
+			temp->next=head;
+			head=temp;
 		}
 	}
 }
