@@ -399,6 +399,30 @@ void * process(void * ptr)
 			write(conn->sock, str, strlen(str));
 			
 		}
+		else if (strcasecmp(buffer, "finish")==0)
+		{
+			if (!accountName)
+			{
+				char str[strSize]= "No account session started";
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, strlen(str));
+				continue;
+			}
+			accountList[accountId]->inUse=0;
+			accountName=NULL;
+			accountId=NULL;	
+			
+			
+			char str[strSize];
+			str="Account released";
+			len=strlen(str);
+			write(conn->sock, &len, sizeof(int));
+			write(conn->sock, str, strlen(str));
+			
+			continue;
+			
+		}
 		
 	}
 
