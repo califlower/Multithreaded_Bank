@@ -33,10 +33,10 @@ typedef struct
 
 } connection_t;
 
-typedef struct sockNode
+struct sockNode
 {
 	int sock;
-	struct node *next;
+	struct sockNode *next;
 }*head;
 
 

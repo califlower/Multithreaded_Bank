@@ -60,7 +60,7 @@ void *printAccounts(void *emptyPtr)
 
 void exitHandler()
 {
-	sockNode *iter=head;
+	struct sockNode *iter=head;
 	char input[strSize]="exit";
 	int len= strlen(input);
 
@@ -414,11 +414,10 @@ void * process(void * ptr)
 			}
 			accountList[accountId]->inUse=0;
 			accountName=NULL;
-			accountId=NULL;	
+			accountId=0;	
 			
 			
-			char str[strSize];
-			str="Account released";
+			char str[strSize]="Account released";
 			len=strlen(str);
 			write(conn->sock, &len, sizeof(int));
 			write(conn->sock, str, strlen(str));
@@ -461,7 +460,7 @@ void listenConnection(connection_t * connection, int sock)
 			pthread_create(&thread, 0, process, (void *)connection);
 			pthread_detach(thread);
 			
-			sockNode *temp=malloc(sizeof(sockNode));
+			struct sockNode *temp=malloc(sizeof(struct sockNode));
 			temp->sock=connection->sock;
 			temp->next=head;
 			head=temp;
