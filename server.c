@@ -42,6 +42,7 @@ void *printAccounts(void *emptyPtr)
 		alarm(20);
 		sem_wait(&semaphore);
 		
+		printf("ACCOUNT LIST\n");
 		int i=0;
 		printf("---------------------------------------\n");
 		for (i=0;(i<numAcc && accountList[i]!=NULL);i++)
@@ -442,12 +443,12 @@ void * process(void * ptr)
  * Starts a client thread on every connection
  * ADD AN EXIT CONDITION AT SOME POINT
 *********************/
-void listenConnection(connection_t * connection, int sock)
+void listenConnection(int sock)
 {
 	while (1)
 	{
 		/* accept incoming connections */
-		connection = (connection_t *)malloc(sizeof(connection_t));
+		connection_t *connection = (connection_t *)malloc(sizeof(connection_t));
 		connection->sock = accept(sock, &connection->address, &connection->addr_len);
 		
 		if (connection->sock <= 0)
@@ -485,7 +486,6 @@ void initConnection()
 	signal(SIGHUP, exitHandler);
 	signal(SIGINT, exitHandler);
 	
-	connection_t * connection;
 
 	/* create socket */
 	sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -507,7 +507,7 @@ void initConnection()
 	pthread_create(&lThread, NULL, printAccounts, NULL);
 	pthread_detach(lThread);
 	
-	listenConnection(connection, sock);
+	listenConnection(sock);
 	
 
 }

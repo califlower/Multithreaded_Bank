@@ -72,7 +72,11 @@ void initConnection(char * inputHost)
 
 	memcpy(&address.sin_addr, host->h_addr_list[0], host->h_length);
 	
-	connect(sock, (struct sockaddr *)&address, sizeof(address));
+	if(connect(sock, (struct sockaddr *)&address, sizeof(address))==-1)
+	{
+		printf("NO SERVER FOUND\n");
+		exit(0);
+	}
 
 }
 
