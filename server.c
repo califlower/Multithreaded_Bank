@@ -381,6 +381,16 @@ void * process(void * ptr)
 				write(conn->sock, str, strlen(str));
 				continue;
 			}
+			read(conn->sock, &len, sizeof(int));
+			buffer[len] = 0;
+			read(conn->sock, buffer, len);
+
+			if (strcmp(buffer,"finish")==0)
+			{
+				if (accountName)
+					accountList[accountId]->inUse=0;
+				break;
+			}
 		
 			char str[strSize];
 			snprintf(str, sizeof(str), "Total Balance of Account: %f", accountList[accountId]->balance);
