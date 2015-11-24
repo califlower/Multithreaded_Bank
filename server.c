@@ -60,7 +60,7 @@ void *printAccounts(void *emptyPtr)
 
 void exitHandler()
 {
-	char input[strSize]="finish";
+	char input[strSize]="exit";
 	int len= strlen(input);
 
 	if (sock!=-1)
@@ -203,7 +203,7 @@ void * process(void * ptr)
 		/* read message */
 		read(conn->sock, buffer, len);
 		
-		if (strcmp(buffer,"finish")==0)
+		if (strcasecmp(buffer,"exit")==0)
 		{
 			if (accountName)
 				accountList[accountId]->inUse=0;
@@ -215,7 +215,7 @@ void * process(void * ptr)
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
 
-			if (strcmp(buffer,"finish")==0)
+			if (strcasecmp(buffer,"exit")==0)
 			{
 				if (accountName)
 					accountList[accountId]->inUse=0;
@@ -255,7 +255,7 @@ void * process(void * ptr)
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
 
-			if (strcmp(buffer,"finish")==0)
+			if (strcasecmp(buffer,"exit")==0)
 			{
 				if (accountName)
 					accountList[accountId]->inUse=0;
@@ -308,7 +308,7 @@ void * process(void * ptr)
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
 
-			if (strcmp(buffer,"finish")==0)
+			if (strcasecmp(buffer,"exit")==0)
 			{
 				if (accountName)
 					accountList[accountId]->inUse=0;
@@ -354,7 +354,7 @@ void * process(void * ptr)
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
 
-			if (strcmp(buffer,"finish")==0)
+			if (strcasecmp(buffer,"exit")==0)
 			{
 				if (accountName)
 					accountList[accountId]->inUse=0;
@@ -385,7 +385,7 @@ void * process(void * ptr)
 			buffer[len] = 0;
 			read(conn->sock, buffer, len);
 
-			if (strcmp(buffer,"finish")==0)
+			if (strcasecmp(buffer,"exit")==0)
 			{
 				if (accountName)
 					accountList[accountId]->inUse=0;

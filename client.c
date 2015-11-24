@@ -18,7 +18,7 @@ void printInstructions()
 	printf("start  <account name> to start a new account session\n");
 	printf("credit <amount> to credit an account that was opened\n");
 	printf("debit  <amount> to debit an account that was opened\n");
-	printf("finish to finish your session\n");
+	printf("exit to exit your session\n");
 	printf("balance total to print total balance in bank account\n");
 	printf("-----------------------------\n");
 	printf("\n");
@@ -34,7 +34,7 @@ void printInstructions()
 *****************/
 void exitHandler()
 {
-	char input[strSize]="finish";
+	char input[strSize]="exit";
 	int len= strlen(input);
 
 	if (sock!=-1)
@@ -96,7 +96,7 @@ void *recieveInput(void *emptyPtr)
 		/* read message */
 		read(sock, input, len);
 		
-		if (strcmp(input, "finish")==0)
+		if (strcmp(input, "exit")==0)
 		{
 			exitHandler();
 			pthread_exit(0);
@@ -117,7 +117,7 @@ void *recieveInput(void *emptyPtr)
 
 /**********************************
 	Waits for a client input to send to the server
-	Sits in its own thread waiting. Exits if "finish" is inputted
+	Sits in its own thread waiting. Exits if "exit" is inputted
 	Also closes the thread in the server by calling exithandler()
 	
 	This function is throttled. Only accepts input every 2 seconds
@@ -138,7 +138,7 @@ void *sendInput(void *emptyPtr)
 		write(sock, &len, sizeof(int));
 		write(sock, input, len);
 
-		if (strcmp(input, "finish")==0)
+		if (strcmp(input, "exit")==0)
 		{
 			exitHandler();
 		}
