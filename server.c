@@ -56,9 +56,14 @@ void *printAccounts(void *emptyPtr)
 		
 		
 	}
-	return NULL;
+	pthread_exit(0);
 }
 
+/*******************
+ * Cleanly handles exit from terminal closes or control c
+ * Goes through the socket list and disconnects all the clients cleanly
+ * Clients then close
+******************/
 void exitHandler()
 {
 	struct sockNode *iter=head;
