@@ -205,19 +205,29 @@ void * process(void * ptr)
 
 	while (1)
 	{
-		/* read length of message */
+		
 		read(conn->sock, &len, sizeof(int));
 		buffer[len] = 0;
-		
-		/* read message */
 		read(conn->sock, buffer, len);
 		
+		/******************
+		 * If client wants to exit account and close terminal
+		 * Set inUse to 0
+		 * Loop is broken
+		 * Client exits
+		*******************/
 		if (strcasecmp(buffer,"exit")==0)
 		{
 			if (accountName)
 				accountList[accountId]->inUse=0;
 			break;
 		}
+		
+		/***************
+		 * Creates a new user account
+		 * Handles the different return conditions
+		***************/
+		
 		else if (strcasecmp(buffer,"open")==0)
 		{
 			read(conn->sock, &len, sizeof(int));
@@ -230,7 +240,6 @@ void * process(void * ptr)
 					accountList[accountId]->inUse=0;
 				break;
 			}
-			
 			
 			int x=addAccount(buffer);
 			
@@ -258,6 +267,12 @@ void * process(void * ptr)
 
 			}
 		}
+		
+		/*****************
+		 * Starts account session
+		 * Deals with error conditions
+		 * Sets account id and name
+		*******************/
 		else if (strcasecmp(buffer,"start")==0)
 		{
 			read(conn->sock, &len, sizeof(int));
@@ -301,6 +316,11 @@ void * process(void * ptr)
 			}
 		}
 		
+		/**********************
+		 * Debits the account money
+		 * handles error conditions from debit
+		 * Uses snprintf to combine strings and ints
+		*********************/
 		else if (strcasecmp(buffer,"debit")==0)
 		{
 			if (!accountName)
@@ -346,6 +366,11 @@ void * process(void * ptr)
 			}
 			
 		}
+		
+		/*****************
+		 * Credits the account
+		 * Operates the same as debit
+		*****************/
 		else if (strcasecmp(buffer,"credit")==0)
 		{
 
@@ -380,6 +405,10 @@ void * process(void * ptr)
 			
 			
 		}
+		
+		/********************
+		 * Gets the account balance and sends it to the client
+		******************/
 		else if (strcasecmp(buffer, "balance")==0)
 		{
 			if (!accountName)
@@ -408,6 +437,13 @@ void * process(void * ptr)
 			write(conn->sock, str, strlen(str));
 			
 		}
+		
+		/**************
+		 * Sets account and account id to -1 (honestly I hope that works)
+		 * Sets account name to null so that a new account can be used
+		 * Sets inuse to 0 so account can be used by someone else
+		 * Doesnt exit thread, client still not exited either
+		***************/
 		else if (strcasecmp(buffer, "finish")==0)
 		{
 			if (!accountName)
@@ -421,8 +457,7 @@ void * process(void * ptr)
 			accountList[accountId]->inUse=0;
 			accountName=NULL;
 			accountId=0;	
-			
-			
+	
 			char str[strSize]="Account released";
 			len=strlen(str);
 			write(conn->sock, &len, sizeof(int));
