@@ -1,6 +1,5 @@
 #include "client_server.h"
 
-
 /*GLOBAL VARIABLES and STRUCTS*/
 /******************************
  * accountList holds accounts
@@ -488,7 +487,7 @@ void listenConnection(int sock)
 	while (1)
 	{
 		/* accept incoming connections */
-		connection_t *connection = (connection_t *)malloc(sizeof(connection_t));
+		connection_t *connection = (connection_t *)calloc(3, sizeof(connection_t));
 		connection->sock = accept(sock, &connection->address, &connection->addr_len);
 		
 		if (connection->sock <= 0)
@@ -526,10 +525,8 @@ void initConnection()
 	signal(SIGHUP, exitHandler);
 	signal(SIGINT, exitHandler);
 	
-
 	/* create socket */
 	sock = socket(AF_INET, SOCK_STREAM, 0);
-
 
 	/* bind socket to port */
 	address.sin_family = AF_INET;
