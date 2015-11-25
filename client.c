@@ -3,6 +3,7 @@
 int port		=pNum;
 int sock 		= -1;
 sem_t 			semaphore;
+sem_t			recSemaphore;
 
 /****************
  * Prints the instructions for using the bank
@@ -48,9 +49,10 @@ void alarmHandler()
 {
 	sem_post(&semaphore);
 }
-
-
-
+void reconnectAlarmHandler()
+{
+	sem_post(&recSemaphore);
+}
 
 /*******************
 	Creates the client connection to the specified server
@@ -72,10 +74,13 @@ void initConnection(char * inputHost)
 
 	memcpy(&address.sin_addr, host->h_addr_list[0], host->h_length);
 	
-	if(connect(sock, (struct sockaddr *)&address, sizeof(address))==-1)
+	while (connect(sock, (struct sockaddr *)&address, sizeof(address))==-1)
 	{
-		printf("NO SERVER FOUND\n");
-		exit(0);
+		printf("NO SERVER FOUND...Trying again\n");
+		signal(SIGALRM,reconnectAlarmHandler);
+		alarm(2);
+		sem_wait(&recSemaphore);
+		
 	}
 
 }
@@ -163,7 +168,8 @@ int main(int argc, char ** argv)
 	pthread_t sThread;
 
 	sem_init(&semaphore, 0, 0);
-
+	sem_init(&recSemaphore, 0, 0);
+	
 	signal(SIGHUP, exitHandler);
 	signal(SIGINT, exitHandler);
 	
