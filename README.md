@@ -7,7 +7,9 @@ This is a command line program that takes 1 argument
 To correctly connect to the server, type the address of the machine 
 it's running on. 
 
-As of now, only inputting localhost will work
+By default, no argument will attempt to connect to "localhost"
+This was done to make life easier for testing, but is also helpful because the majority of the time the client
+and server will be on the same machine.
 
 ##Server
 
@@ -17,7 +19,7 @@ This is a command line program that takes no arguments. Simply run it, and then 
 
 ------------------------------------------
 Starts a new account. Account name must be under 100 characters. You cannot have more than 20 accounts at any one time
-Accounts get deleted on server closing.
+Accounts get deleted on server closing. Accounts can only be added one at a time.
 
 You can either type 
 
@@ -34,6 +36,7 @@ or
 
 --------------------------------------
 Starts an account session for a client. Can only start one account session per client per account
+This locks the inuse variable. The locking of the variable can only be done by one thread at a time.
 
 You can either type 
 
@@ -50,7 +53,8 @@ or
 **debit**
 
 ---------------------------------------
-Removes money from an account. 
+Removes money from an account.
+Cannot remove more than what exists
 
 **credit**
 
