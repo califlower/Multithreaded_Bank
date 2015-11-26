@@ -86,6 +86,7 @@ void exitHandler()
 	Return 0 if Sucess 
 	Return 1 if too many accounts
 	return 2 if accountname too large
+	return 3 if account already exists
 **************************/
 
 int addAccount(char * name)
@@ -104,8 +105,17 @@ int addAccount(char * name)
 		
 		return 2;
 	}
+
+
 	else
 	{
+		int i;
+		for (i=0; i<maxAcc; i++)
+		{
+			if (accountList[i] && strcasecmp(name, accountList[i]->accountName)==0)
+			return 3;
+
+		}
 		account *newAccount=malloc(sizeof(account));
 		strcpy(newAccount->accountName,name);
 		newAccount->balance=0;
@@ -257,7 +267,7 @@ void * process(void * ptr)
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, len);
 			}
-			else
+			else if (x==2)
 			{
 				char str[strSize]= "Account name too large";
 				len=strlen(str);
@@ -265,6 +275,14 @@ void * process(void * ptr)
 				write(conn->sock, str, len);
 
 			}
+			else if (x==3)
+			{
+				char str[strSize]= "Account already exists";
+				len=strlen(str);
+				write(conn->sock, &len, sizeof(int));
+				write(conn->sock, str, len);
+			}
+			
 		}
 		
 /*******************************************************************
