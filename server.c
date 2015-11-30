@@ -258,6 +258,7 @@ void * process(void * ptr)
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, strlen(str));
+				continue;
 
 			}
 			else if (x==1)
@@ -266,6 +267,7 @@ void * process(void * ptr)
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, len);
+				continue;
 			}
 			else if (x==2)
 			{
@@ -273,6 +275,7 @@ void * process(void * ptr)
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, len);
+				continue;
 
 			}
 			else if (x==3)
@@ -281,6 +284,7 @@ void * process(void * ptr)
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, len);
+				continue;
 			}
 			
 		}
@@ -311,6 +315,7 @@ void * process(void * ptr)
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, strlen(str));
+				continue;
 
 			}
 			else if (x==-2)
@@ -319,6 +324,7 @@ void * process(void * ptr)
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, strlen(str));
+				continue;
 
 			}
 			else
@@ -330,6 +336,7 @@ void * process(void * ptr)
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, strlen(str));
+				continue;
 			}
 		}
 		
@@ -371,6 +378,7 @@ void * process(void * ptr)
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, strlen(str));
+				continue;
 
 			}
 			else if (x==1)
@@ -379,6 +387,7 @@ void * process(void * ptr)
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, strlen(str));
+				continue;
 
 			}
 			
@@ -418,6 +427,7 @@ void * process(void * ptr)
 			len=strlen(str);
 			write(conn->sock, &len, sizeof(int));
 			write(conn->sock, str, strlen(str));
+			continue;
 
 			
 			
@@ -452,6 +462,7 @@ void * process(void * ptr)
 			len=strlen(str);
 			write(conn->sock, &len, sizeof(int));
 			write(conn->sock, str, strlen(str));
+			continue;
 			
 		}
 		
