@@ -113,7 +113,11 @@ int addAccount(char * name)
 		for (i=0; i<numAcc && accountList[i]!=NULL; i++)
 		{
 			if (strcasecmp(name, accountList[i]->accountName)==0)
+			{
+				pthread_mutex_unlock(&addLock);
 				return 3;
+			}
+				
 
 		}
 		account *newAccount=malloc(sizeof(account));
@@ -278,7 +282,7 @@ void * process(void * ptr)
 				continue;
 
 			}
-			else
+			else if (x==3)
 			{
 				char str[strSize]= "Account already exists";
 				len=strlen(str);
