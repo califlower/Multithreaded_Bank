@@ -110,10 +110,10 @@ int addAccount(char * name)
 	else
 	{
 		int i;
-		for (i=0; i<maxAcc; i++)
+		for (i=0; i<numAcc && accountList[i]!=NULL; i++)
 		{
-			if (accountList[i] && strcasecmp(name, accountList[i]->accountName)==0)
-			return 3;
+			if (strcasecmp(name, accountList[i]->accountName)==0)
+				return 3;
 
 		}
 		account *newAccount=malloc(sizeof(account));
