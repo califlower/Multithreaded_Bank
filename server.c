@@ -278,7 +278,7 @@ void * process(void * ptr)
 				continue;
 
 			}
-			else if (x==3)
+			else
 			{
 				char str[strSize]= "Account already exists";
 				len=strlen(str);
