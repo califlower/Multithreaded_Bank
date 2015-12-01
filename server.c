@@ -518,7 +518,8 @@ void listenConnection(int sock)
 		}
 		else
 		{
-			/* start a new thread but do not wait for it */
+			printf("Client Connection Accepted");
+			
 			pthread_create(&thread, 0, process, (void *)connection);
 			pthread_detach(thread);
 			
