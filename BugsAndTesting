@@ -1,11 +1,8 @@
 - Bugs currently we need to fix/check for:
 
  IMPORTANT:
-  - **When closing server, clients should stop running as well**
-  - ** Need to complete the finish function, when finish is typed, the current bank account should close
-  and the program should prompt the user as if the client was just opened again **
-  - **Timing - 2 second thing**
-    - Try testing for a lot of threads open, even going above 20, see what happens.
+  - Try testing for a lot of threads open, even going above 20, see what happens.
   - Allow for Full Name bank accounts (currently only allows for one word, A full bank first and last name would be ideal)
   - Currently we allow strings longer than 100 characters, this is NOT allowed!!
-  .. nothing else yet, will look
+  - Need to fix balance thing (easy fix)
+  - Need to add finish/exit in the print statement.
