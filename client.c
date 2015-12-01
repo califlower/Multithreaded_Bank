@@ -19,8 +19,9 @@ void printInstructions()
 	printf("start  <account name> to start a new account session\n");
 	printf("credit <amount> to credit an account that was opened\n");
 	printf("debit  <amount> to debit an account that was opened\n");
-	printf("exit to exit your session\n");
-	printf("balance total to print total balance in bank account\n");
+	printf("balance to print total balance in bank account\n");
+	printf("finish to release your current account session\n");
+	printf("exit to exit your session completely\n");
 	printf("-----------------------------\n");
 	printf("\n");
 }
