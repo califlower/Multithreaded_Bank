@@ -6,7 +6,6 @@
   and the program should prompt the user as if the client was just opened again **
   - **Timing - 2 second thing**
     - Try testing for a lot of threads open, even going above 20, see what happens.
-
-  NOT VERY IMPORTANT:
   - Allow for Full Name bank accounts (currently only allows for one word, A full bank first and last name would be ideal)
+  - Currently we allow strings longer than 100 characters, this is NOT allowed!!
   .. nothing else yet, will look
