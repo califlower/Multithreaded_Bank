@@ -78,8 +78,14 @@ Cannot remove more than what exists
 ----------------------------------------
 Credits money to an account
 
-**finish**
+**exit**
 
 ---------------------------------------
 Finishes the session cleanly and exits all threads. Better than closing the terminal though
 there is a signal handler that should handle closing a terminal unexpectedly and other things like Control C
+
+
+**finish**
+
+---------------------------------------
+Exits the current account, allowing for a new account to be opened
