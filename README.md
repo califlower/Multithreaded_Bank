@@ -88,4 +88,4 @@ there is a signal handler that should handle closing a terminal unexpectedly and
 **finish**
 
 ---------------------------------------
-Exits the current account, allowing for a new account to be opened
+Exits the current account, allowing for a new account to be opened.
