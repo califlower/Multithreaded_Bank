@@ -30,6 +30,7 @@ Initial start of the server will generate a thread for printing accounts.
 Code between Server and Server 2 are nearly identical. Server 2 though forks on a client connection. 
 The account list is mmapped in shared memory so that the server forks can read and write to it.
 The number of accounts is also mmapped.
+Client connections will cause the server to print the PID of the new process that was generated.
 
 
 **open**
