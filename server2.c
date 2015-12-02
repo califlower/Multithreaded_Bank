@@ -7,9 +7,9 @@
  * numAcc holds the total number of accounts in the system
 ******************************/
 
-static account *accountList[maxAcc]	={NULL}; /*share this*/
+static account *accountList; /*share this*/
 static int port				=pNum;
-static int *numAcc			=0; /*share this*/
+static int *numAcc; /*share this*/
 static int sock=			-1; /*share this?*/
 
 pthread_t 				thread;
@@ -44,11 +44,11 @@ void *printAccounts(void *emptyPtr)
 		printf("ACCOUNT LIST\n");
 		int i=0;
 		printf("---------------------------------------\n");
-		for (i=0;(i<20 && accountList[i]!=NULL);i++)
+		for (i=0;(i<20 && !strcasecmp(accountList[i].accountName,"")==0);i++)
 		{
-			printf("%s\n", accountList[i]->accountName);
-			printf("        %f\n", accountList[i]->balance);
-			(accountList[i]->inUse==1) ? printf("        IN SESSION\n"):printf("        NOT IN SESSION\n");
+			printf("%s\n", accountList[i].accountName);
+			printf("        %f\n", accountList[i].balance);
+			(accountList[i].inUse==1) ? printf("        IN SESSION\n"):printf("        NOT IN SESSION\n");
 		}
 		
 		printf("----------------------------------------\n");
@@ -110,9 +110,9 @@ int addAccount(char * name)
 	else
 	{
 		int i;
-		for (i=0; i<*numAcc && accountList[i]!=NULL; i++)
+		for (i=0; i<*numAcc && !strcasecmp(accountList[i].accountName,"")==0; i++)
 		{
-			if (strcasecmp(name, accountList[i]->accountName)==0)
+			if (strcasecmp(name, accountList[i].accountName)==0)
 			{
 				pthread_mutex_unlock(&addLock);
 				return 3;
@@ -120,11 +120,11 @@ int addAccount(char * name)
 				
 
 		}
-		account *newAccount=malloc(sizeof(account));
-		strcpy(newAccount->accountName,name);
-		newAccount->balance=0;
-		newAccount->inUse=0;
-		accountList[*numAcc]=newAccount;
+		
+		strcpy(accountList[i].accountName,name);
+		accountList[i].balance=0;
+		accountList[i].inUse=0;
+		
 		int temp=*numAcc;
 		temp++;
 		*numAcc=temp;
@@ -151,17 +151,17 @@ int startAccount(char * name)
 	
 	for (i=0; i<maxAcc; i++)
 	{
-		if (!accountList[i])
+		if (!strcasecmp(accountList[i].accountName,"")==0)
 		{
 			return -1;
 		}
-		else if (strcasecmp(name, accountList[i]->accountName)==0)
+		else if (strcasecmp(name, accountList[i].accountName)==0)
 		{
 			pthread_mutex_lock(&startLock);
 			
-			if (accountList[i]->inUse==0)
+			if (accountList[i].inUse==0)
 			{
-				accountList[i]->inUse=1;
+				accountList[i].inUse=1;
 				pthread_mutex_unlock(&startLock);
 				return i;
 			}
@@ -185,11 +185,11 @@ int startAccount(char * name)
 int debitAccount(int id, float amount)
 {
 	
-	if ((accountList[id]->balance)-amount<0)
+	if ((accountList[id].balance)-amount<0)
 		return 1;
 	else
 	{
-		accountList[id]->balance-=amount;
+		accountList[id].balance-=amount;
 		return 0;
 	}
 }
@@ -199,7 +199,7 @@ int debitAccount(int id, float amount)
 ***********/
 void creditAccount(int id, float amount)
 {
-	accountList[id]->balance+=amount;
+	accountList[id].balance+=amount;
 }
 
 /*****************************
@@ -234,7 +234,7 @@ void * process(void * ptr)
 		if (strcasecmp(buffer,"exit")==0)
 		{
 			if (accountName)
-				accountList[accountId]->inUse=0;
+				accountList[accountId].inUse=0;
 			break;
 		}
 		
@@ -252,7 +252,7 @@ void * process(void * ptr)
 			if (strcasecmp(buffer,"exit")==0)
 			{
 				if (accountName)
-					accountList[accountId]->inUse=0;
+					accountList[accountId].inUse=0;
 				break;
 			}
 			
@@ -309,7 +309,7 @@ void * process(void * ptr)
 			if (strcasecmp(buffer,"exit")==0)
 			{
 				if (accountName)
-					accountList[accountId]->inUse=0;
+					accountList[accountId].inUse=0;
 				break;
 			}
 			
@@ -336,9 +336,9 @@ void * process(void * ptr)
 			else
 			{
 				char str[strSize]= "Started session with account name : ";
-				strcat(str, accountList[x]->accountName);
+				strcat(str, accountList[x].accountName);
 				accountId=x;
-				accountName=accountList[x]->accountName;
+				accountName=accountList[x].accountName;
 				len=strlen(str);
 				write(conn->sock, &len, sizeof(int));
 				write(conn->sock, str, strlen(str));
@@ -370,7 +370,7 @@ void * process(void * ptr)
 			if (strcasecmp(buffer,"exit")==0)
 			{
 				if (accountName)
-					accountList[accountId]->inUse=0;
+					accountList[accountId].inUse=0;
 				break;
 			}
 			
@@ -423,7 +423,7 @@ void * process(void * ptr)
 			if (strcasecmp(buffer,"exit")==0)
 			{
 				if (accountName)
-					accountList[accountId]->inUse=0;
+					accountList[accountId].inUse=0;
 				break;
 			}
 			
@@ -453,7 +453,7 @@ void * process(void * ptr)
 				continue;
 			}
 			char str[strSize];
-			snprintf(str, sizeof(str), "Total Balance of Account: %f", accountList[accountId]->balance);
+			snprintf(str, sizeof(str), "Total Balance of Account: %f", accountList[accountId].balance);
 			len=strlen(str);
 			write(conn->sock, &len, sizeof(int));
 			write(conn->sock, str, strlen(str));
@@ -477,7 +477,7 @@ void * process(void * ptr)
 				write(conn->sock, str, strlen(str));
 				continue;
 			}
-			accountList[accountId]->inUse=0;
+			accountList[accountId].inUse=0;
 			accountName=NULL;
 			accountId=0;	
 	
@@ -592,7 +592,7 @@ void initConnection()
 
 int main(int argc, char ** argv)
 {
-	accountList[20] = mmap(NULL, sizeof *accountList, PROT_READ | PROT_WRITE, 
+	accountList = mmap(NULL, sizeof *accountList, PROT_READ | PROT_WRITE, 
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
         numAcc = mmap(NULL, sizeof *numAcc, PROT_READ | PROT_WRITE, 
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
