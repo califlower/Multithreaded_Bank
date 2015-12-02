@@ -47,7 +47,7 @@ void *printAccounts(void *emptyPtr)
 		printf("ACCOUNT LIST\n");
 		int i=0;
 		printf("---------------------------------------\n");
-		for (i=0;(i<20 && !strcasecmp(accountList[i].accountName,"")==0);i++)
+		for (i=0;(i<*numAcc && !strcasecmp(accountList[i].accountName,"")==0);i++)
 		{
 			printf("%s\n", accountList[i].accountName);
 			printf("        %f\n", accountList[i].balance);
@@ -520,8 +520,7 @@ void listenConnection(int sock)
 		}
 		else
 		{
-			int pid=fork();
-			if (pid==0)
+			if (fork()==0)
 			{
 				printf("Client Connection Accepted\n");
 				int temp2=getpid();
@@ -592,9 +591,9 @@ void initConnection()
 
 int main(int argc, char ** argv)
 {
-	accountList = mmap(NULL, sizeof *accountList, PROT_READ | PROT_WRITE, 
+	accountList = mmap(NULL, maxAcc*sizeof(account), PROT_READ | PROT_WRITE, 
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-        numAcc = mmap(NULL, sizeof *numAcc, PROT_READ | PROT_WRITE, 
+        numAcc = mmap(NULL, sizeof(int), PROT_READ | PROT_WRITE, 
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 
 	struct sigaction sa;
