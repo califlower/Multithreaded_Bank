@@ -11,9 +11,26 @@ By default, no argument will attempt to connect to "localhost"
 This was done to make life easier for testing, but is also helpful because the majority of the time the client
 and server will be on the same machine.
 
+If no server is found, the client will attempt to reconnect every 2 seconds.
+
+The client has two threads, one for recieving and one for sending.
+Throttling is done client side. There is a two second delay after sending a command to simulate a large amount of users. 
+Throttling is done after the input is sent, so any commands will be sent instantly to the server. 
+
+CAUTION: Improper closing of the server can sometimes cause the client to not find the server. To fix it, close your terminals and restart the client and server. This should not occur with proper start and shutdown. The server can be properly closed and shutdown using control c or simply closing the terminal. 
+
 ##Server
 
 This is a command line program that takes no arguments. Simply run it, and then keep it in the background
+Connections to the server will generate a new client thread.
+Initial start of the server will generate a thread for printing accounts.
+
+##Server2
+
+Code between Server and Server 2 are nearly identical. Server 2 though forks on a client connection. 
+The account list is mmapped in shared memory so that the server forks can read and write to it.
+The number of accounts is also mmapped.
+
 
 **open**
 
@@ -47,7 +64,6 @@ or
 *start*
 
 *accountname*  as two commands
-
 
 
 **debit**
