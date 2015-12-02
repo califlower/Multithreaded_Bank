@@ -9,7 +9,7 @@
 
 static account *accountList[maxAcc]	={NULL}; /*share this*/
 static int port				=pNum;
-static int numAcc			=0; /*share this*/
+static int *numAcc			=0; /*share this*/
 static int sock=			-1; /*share this?*/
 
 pthread_t 				thread;
@@ -44,7 +44,7 @@ void *printAccounts(void *emptyPtr)
 		printf("ACCOUNT LIST\n");
 		int i=0;
 		printf("---------------------------------------\n");
-		for (i=0;(i<numAcc && accountList[i]!=NULL);i++)
+		for (i=0;(i<*numAcc && accountList[i]!=NULL);i++)
 		{
 			printf("%s\n", accountList[i]->accountName);
 			printf("        %f\n", accountList[i]->balance);
@@ -93,7 +93,7 @@ int addAccount(char * name)
 {
 	pthread_mutex_lock(&addLock);
 	
-	if (numAcc>=maxAcc)
+	if (*numAcc>=maxAcc)
 	{
 		pthread_mutex_unlock(&addLock);
 		
@@ -110,7 +110,7 @@ int addAccount(char * name)
 	else
 	{
 		int i;
-		for (i=0; i<numAcc && accountList[i]!=NULL; i++)
+		for (i=0; i<*numAcc && accountList[i]!=NULL; i++)
 		{
 			if (strcasecmp(name, accountList[i]->accountName)==0)
 			{
@@ -124,8 +124,8 @@ int addAccount(char * name)
 		strcpy(newAccount->accountName,name);
 		newAccount->balance=0;
 		newAccount->inUse=0;
-		accountList[numAcc]=newAccount;
-		numAcc++;
+		accountList[*numAcc]=newAccount;
+		*numAcc++;
 		
 		pthread_mutex_unlock(&addLock);
 		
