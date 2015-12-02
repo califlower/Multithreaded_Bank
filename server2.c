@@ -547,8 +547,17 @@ void initConnection()
 	
 	struct sockaddr_in address;
 	
-	pthread_mutex_init(&addLock, NULL);
-	pthread_mutex_init(&startLock, NULL);
+	pthread_mutexattr_t addAtt;
+	pthread_mutexattr_t addAtt2;
+
+	pthread_mutexattr_init(&addAtt)
+	pthread_mutexattr_init(&addAtt2);
+	
+	pthread_mutexattr_setpshared(&addAtt, PTHREAD_PROCESS_SHARED);
+	pthread_mutexattr_setpshared(&addAtt2, PTHREAD_PROCESS_SHARED);
+
+	pthread_mutex_init(&addLock, addAtt);
+	pthread_mutex_init(&startLock, addAtt2);
 	
 	sem_init(&semaphore, 0, 0);
 
