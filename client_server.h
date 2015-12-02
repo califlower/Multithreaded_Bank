@@ -9,6 +9,8 @@
 #include 			<signal.h>
 #include 			<time.h>
 #include 			<semaphore.h>
+#include 			<sys/types.h>
+#include 			<sys/mman.h>
 
 /*****************************
  * pNum is the port number of the server

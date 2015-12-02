@@ -522,9 +522,9 @@ void listenConnection(int sock)
 			if (pid==0)
 			{
 				printf("Client Connection Accepted\n");
-				int temp=getpid();
+				int temp2=getpid();
 				printf("Process Created with ID : ");
-				printf("%i\n", temp);
+				printf("%i\n", temp2);
 				pthread_create(&thread, 0, process, (void *)connection);
 				pthread_detach(thread);
 				
@@ -550,7 +550,7 @@ void initConnection()
 	pthread_mutexattr_t addAtt;
 	pthread_mutexattr_t addAtt2;
 
-	pthread_mutexattr_init(&addAtt)
+	pthread_mutexattr_init(&addAtt);
 	pthread_mutexattr_init(&addAtt2);
 	
 	pthread_mutexattr_setpshared(&addAtt, PTHREAD_PROCESS_SHARED);
@@ -590,7 +590,7 @@ void initConnection()
 
 int main(int argc, char ** argv)
 {
-	accountList = mmap(NULL, sizeof *accountList, PROT_READ | PROT_WRITE, 
+	accountList[20] = mmap(NULL, sizeof *accountList, PROT_READ | PROT_WRITE, 
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
         numAcc = mmap(NULL, sizeof *numAcc, PROT_READ | PROT_WRITE, 
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
