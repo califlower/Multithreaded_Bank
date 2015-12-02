@@ -7,16 +7,16 @@
  * numAcc holds the total number of accounts in the system
 ******************************/
 
-static account *accountList[maxAcc]	={NULL};
+static account *accountList[maxAcc]	={NULL}; /*share this*/
 static int port				=pNum;
-static int numAcc			=0;
-static int sock=			-1;
+static int numAcc			=0; /*share this*/
+static int sock=			-1; /*share this?*/
 
 pthread_t 				thread;
 pthread_t				lThread;
-pthread_mutex_t 			addLock;
-pthread_mutex_t 			startLock;
-sem_t 					semaphore;
+pthread_mutex_t 			addLock;  /*share this*/
+pthread_mutex_t 			startLock; /*share this*/
+sem_t 					semaphore; /*share this*/
 
 /*********************
  * Handles printing every 20 seconds
@@ -518,15 +518,19 @@ void listenConnection(int sock)
 		}
 		else
 		{
-			printf("Client Connection Accepted\n");
+			int pid=fork();
+			if (pid==0)
+			{
+				printf("Client Connection Accepted\n");
+				pthread_create(&thread, 0, process, (void *)connection);
+				pthread_detach(thread);
+				
+				struct sockNode *temp=malloc(sizeof(struct sockNode));
+				temp->sock=connection->sock;
+				temp->next=head;
+				head=temp;	
+			}
 			
-			pthread_create(&thread, 0, process, (void *)connection);
-			pthread_detach(thread);
-			
-			struct sockNode *temp=malloc(sizeof(struct sockNode));
-			temp->sock=connection->sock;
-			temp->next=head;
-			head=temp;
 		}
 	}
 }
