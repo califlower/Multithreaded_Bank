@@ -11,6 +11,8 @@
 #include 			<semaphore.h>
 #include 			<sys/types.h>
 #include 			<sys/mman.h>
+#include 			<sys/stat.h>
+#include                        <fcntl.h>
 
 /*****************************
  * pNum is the port number of the server
