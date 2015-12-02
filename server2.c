@@ -151,11 +151,8 @@ int startAccount(char * name)
 	
 	for (i=0; i<maxAcc; i++)
 	{
-		if (!strcasecmp(accountList[i].accountName,"")==0)
-		{
-			return -1;
-		}
-		else if (strcasecmp(name, accountList[i].accountName)==0)
+		
+		if (strcasecmp(name, accountList[i].accountName)==0)
 		{
 			pthread_mutex_lock(&startLock);
 			
