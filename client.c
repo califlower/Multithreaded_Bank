@@ -108,6 +108,7 @@ void *recieveInput(void *emptyPtr)
 		
 		if (strcmp(input, "exit")==0)
 		{
+			printf("Server Exiting");
 			exitHandler();
 			pthread_exit(0);
 		}
