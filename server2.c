@@ -593,7 +593,6 @@ int main(int argc, char ** argv)
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
         numAcc = mmap(NULL, sizeof *numAcc, PROT_READ | PROT_WRITE, 
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-        numAcc=0;
 	initConnection();
 	return 0;
 
