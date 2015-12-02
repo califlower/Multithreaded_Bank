@@ -28,6 +28,9 @@ void alarmHandler()
 	sem_post(&semaphore);
 }
 
+
+
+
 /**************************
  * Print list of all account every 20 seconds
  * Happens in a seperate thread
@@ -200,12 +203,12 @@ void creditAccount(int id, float amount)
 }
 
 /*****************************
- * Client process. Handles inputs and then decides what to do based on the input
+ * Client clientThread. Handles inputs and then decides what to do based on the input
  * Each client gets one thread
  * Not super complicated
- * Each client process gets its own accountName and ID
+ * Each client clientThread gets its own accountName and ID
 ******************************/
-void * process(void * ptr)
+void * clientThread(void * ptr)
 {
 	char * accountName=NULL;
 	int accountId;
@@ -524,7 +527,7 @@ void listenConnection(int sock)
 				int temp2=getpid();
 				printf("Process Created with ID : ");
 				printf("%i\n", temp2);
-				pthread_create(&thread, 0, process, (void *)connection);
+				pthread_create(&thread, 0, clientThread, (void *)connection);
 				pthread_detach(thread);
 				
 				struct sockNode *temp=malloc(sizeof(struct sockNode));
@@ -593,6 +596,18 @@ int main(int argc, char ** argv)
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
         numAcc = mmap(NULL, sizeof *numAcc, PROT_READ | PROT_WRITE, 
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+
+	struct sigaction sa;
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+
+	if (sigaction(SIGCHLD, &sa, 0) == -1) 
+	{
+  		perror(0);
+  		exit(1);
+	}
+
 	initConnection();
 	return 0;
 

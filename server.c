@@ -201,12 +201,12 @@ void creditAccount(int id, float amount)
 }
 
 /*****************************
- * Client process. Handles inputs and then decides what to do based on the input
+ * Client clientThread. Handles inputs and then decides what to do based on the input
  * Each client gets one thread
  * Not super complicated
- * Each client process gets its own accountName and ID
+ * Each client clientThread gets its own accountName and ID
 ******************************/
-void * process(void * ptr)
+void * clientThread(void * ptr)
 {
 	char * accountName=NULL;
 	int accountId;
@@ -520,7 +520,7 @@ void listenConnection(int sock)
 		{
 			printf("Client Connection Accepted\n");
 			
-			pthread_create(&thread, 0, process, (void *)connection);
+			pthread_create(&thread, 0, clientThread, (void *)connection);
 			pthread_detach(thread);
 			
 			struct sockNode *temp=malloc(sizeof(struct sockNode));
