@@ -590,6 +590,8 @@ void initConnection()
 
 int main(int argc, char ** argv)
 {
+	accountList = mmap(NULL, sizeof *accountList, PROT_READ | PROT_WRITE, 
+                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 	initConnection();
 	return 0;
 
