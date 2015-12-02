@@ -490,7 +490,7 @@ void * process(void * ptr)
 		
 	}
 
-	/* close socket and clean up */
+	printf("Client Exiting");
 	close(conn->sock);
 	free(conn);
 	pthread_exit(0);
