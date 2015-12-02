@@ -490,7 +490,7 @@ void * process(void * ptr)
 		
 	}
 
-	printf("Client Exiting");
+	printf("Client Exiting\n");
 	close(conn->sock);
 	free(conn);
 	pthread_exit(0);
@@ -518,7 +518,7 @@ void listenConnection(int sock)
 		}
 		else
 		{
-			printf("Client Connection Accepted");
+			printf("Client Connection Accepted\n");
 			
 			pthread_create(&thread, 0, process, (void *)connection);
 			pthread_detach(thread);
