@@ -44,7 +44,7 @@ void *printAccounts(void *emptyPtr)
 		printf("ACCOUNT LIST\n");
 		int i=0;
 		printf("---------------------------------------\n");
-		for (i=0;(i<*numAcc && accountList[i]!=NULL);i++)
+		for (i=0;(i<20 && accountList[i]!=NULL);i++)
 		{
 			printf("%s\n", accountList[i]->accountName);
 			printf("        %f\n", accountList[i]->balance);
@@ -125,7 +125,9 @@ int addAccount(char * name)
 		newAccount->balance=0;
 		newAccount->inUse=0;
 		accountList[*numAcc]=newAccount;
-		*numAcc++;
+		int temp=*numAcc;
+		temp++;
+		*numAcc=temp;
 		
 		pthread_mutex_unlock(&addLock);
 		
