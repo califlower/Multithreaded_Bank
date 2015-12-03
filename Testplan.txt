@@ -65,7 +65,7 @@ Test Case 3: Opening/Starting an Account and Crediting/Debiting and Printing Bal
 	- Ex: balance
 
 
-Expected Output:
+Expected Output by both Client/Server:
 
 Server Output:
 ----------------------------------------
@@ -91,20 +91,82 @@ Total Balance of Account: 450.000000
 
 -------------------------------------------------------------------------
 Test Case 4: Trying to Open an account with a string length over 100 characters
+
+ - Run server and client
+ - open followed by string over 100 characters
+
+Example:
+
+open asdasdawdawdawlijawfalwfjiawljflaiwjflawjflaijwflawijflaijwflaiwjflawijfalwjiflawfjiawljflaiwjfawlifjalwifjaliwjfalwfjawlifjalwfi
+
+Expected Output by Client:
+Account name too large
+
 -------------------------------------------------------------------------
 Test Case 5: Trying to Debit amount which is greater than the total balance
+
+ - Run server and client
+ - Open an account
+ - Credit a certain amount of money
+ - Debit an amount higher than the amount you credited or the total balance.
+
+Example:
+open saif
+start saif
+credit 1000
+debit 1500
+
+Expected Output by Client:
+Cannot debit. Not enough money in account
 -------------------------------------------------------------------------
 Test Case 6: Trying to add an account which has the same name
+
+ - Run server and client
+ - Open an account
+ - Open another account with the same name as the account you opened previously
+
+Expected Output by Client:
+Account already exists
 -------------------------------------------------------------------------
 Test Case 7: Trying to start an account while running already on another client
+
+ - Run server and client
+ - Open an account
+ - Start the account on the client
+ - Open another client
+ - Start the same account name on the second client
+
+
+Expected Output by Client:
+Account in use
 -------------------------------------------------------------------------
 Test Case 8: Trying to open more than 20 bank accounts
+
+ - Run server and client
+ - Open 20+ different accounts
+
+Expected Output by Client:
+Too many accounts
 -------------------------------------------------------------------------
 Test Case 9: Opening an account, working on it, then finishing, and opening another account
 -------------------------------------------------------------------------
 Test Case 10: Closing the Client
+
+ - Close a client
+
+Expected Output by Server (server will still be running however):
+Client Exitting
 -------------------------------------------------------------------------
 Test Case 11: Closing the Server
--------------------------------------------------------------------------
-Test Case 12: Exiting the Client
 
+ - Close a server
+
+Expected Output by Client (client will stop working altogether): 
+Server Exitting
+-------------------------------------------------------------------------
+Test Case 12: Exiting the Client Using Exit
+
+ - Type exit in a client
+
+Expected Output by Server (server will still be running however):
+Client Exitting
