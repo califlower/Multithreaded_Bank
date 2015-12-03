@@ -1,0 +1,96 @@
+Instructions for testing:
+
+ - In order for the programs to work, client processes must specify the name of the machine where the 
+ client expects to find the server process as a command line argument
+ - The server takes no command line arguments.
+--------------------------------------------------
+
+Test Case 1: (Trying to connect to server and successful)
+
+ - Run server
+   - Ex: ./server
+ - Run client 
+   - Ex: (command line argument for same computer ./client localhost)
+
+
+Expected Output (when connecting is a success):
+
+Server will output:
+
+Client Connection Accepted
+Process Created with ID : (random pid here)
+
+
+Client will output:
+
+Connection to Online Bank Successful
+Welcome to Your Online Bank
+-----------------------------
+Options
+open   <account name> to open a new account
+start  <account name> to start a new account session
+credit <amount> to credit an account that was opened
+debit  <amount> to debit an account that was opened
+balance to print total balance in bank account
+finish to release your current account session
+exit to exit your session completely
+
+-------------------------------------------------------------------------
+Test Case 2: Trying To Connect and Unsuccessful
+
+ - need to test this on another computer still (will do later)
+
+-------------------------------------------------------------------------
+Test Case 3: Opening/Starting an Account and Crediting/Debiting and Printing Balance
+
+ - Run server
+   	- Ex: ./server
+
+ - Run client 
+   	- Ex: (command line argument for same computer ./client localhost)
+
+ - In the client (after the client prompts the print options) type open and then write a specific name or string.
+   	- Ex: open John Smith
+
+ - Wait for the client to respond and then type start followed by the name of the account you would like to start.
+	- Ex: start John Smith
+
+ - Add money to the account by typing credit followed by the amount
+	- Ex: credit 500.00
+
+ - Subtract money to the account by typing debit followed by the amount (which must be less than the total amount in the account)
+   	- Ex: debit 50.00
+
+ - Type balance to print out the total balance in the account
+	- Ex: balance
+
+
+Expected Output:
+
+Server Output:
+----------------------------------------
+ACCOUNT LIST
+---------------------------------------
+John
+        450.000000
+        IN SESSION
+----------------------------------------
+
+Client Output:
+
+open John Smith
+Account Added
+start John Smith
+Started session with account name : John
+credit 500
+Account credited +500.000000
+debit 50
+Account debited -50.000000
+balance
+Total Balance of Account: 450.000000
+
+-------------------------------------------------------------------------
+Test Case 4: 
+	
+
+
