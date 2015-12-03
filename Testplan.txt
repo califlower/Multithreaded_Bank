@@ -1,7 +1,7 @@
 Instructions for testing:
 
- - In order for the programs to work, client processes must specify the name of the machine where the 
- client expects to find the server process as a command line argument
+ - In order for the programs to work, client processes must specify the name of the machine where the client expects to find the server process as a command line argument
+
  - The server takes no command line arguments.
 --------------------------------------------------
 
@@ -90,7 +90,21 @@ balance
 Total Balance of Account: 450.000000
 
 -------------------------------------------------------------------------
-Test Case 4: 
-	
-
+Test Case 4: Trying to Open an account with a string length over 100 characters
+-------------------------------------------------------------------------
+Test Case 5: Trying to Debit amount which is greater than the total balance
+-------------------------------------------------------------------------
+Test Case 6: Trying to add an account which has the same name
+-------------------------------------------------------------------------
+Test Case 7: Trying to start an account while running already on another client
+-------------------------------------------------------------------------
+Test Case 8: Trying to open more than 20 bank accounts
+-------------------------------------------------------------------------
+Test Case 9: Opening an account, working on it, then finishing, and opening another account
+-------------------------------------------------------------------------
+Test Case 10: Closing the Client
+-------------------------------------------------------------------------
+Test Case 11: Closing the Server
+-------------------------------------------------------------------------
+Test Case 12: Exiting the Client
 
