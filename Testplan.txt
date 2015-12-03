@@ -1,7 +1,25 @@
 Instructions for testing:
  - In order for the programs to work, client processes must specify the name of the machine where the client expects to find the server process as a command line argument
  - The server takes no command line arguments.
-----------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+Test Case 0: Trying to connect to server while on another computer
+
+ - Find the local IP Address of the Server (for Ilabs/Linux  in terminal  the command is host <hostname> 
+ - This will get you the IP Address needed for the client to connect to the server
+ - Run the server on a seperate computer than your client
+ - Run the client using the IP Address you got from the host server. 
+  	- Ex: ./client 128.6.13.216
+  	
+Expected Output (when successful):
+
+Server will output:
+
+Client Connection Accepted
+Process Created with ID : (random pid here)
+
+Client will output:
+Connection to Online Bank Successful
+-----------------------------------------------------------------------------------------------------------------------------
 Test Case 1: (Trying to connect to server and successful)
 
  - Run server
@@ -17,21 +35,14 @@ Client Connection Accepted
 Process Created with ID : (random pid here)
 
 Client will output:
-
 Connection to Online Bank Successful
-Welcome to Your Online Bank
------------------------------
-Options
-open   <account name> to open a new account
-start  <account name> to start a new account session
-credit <amount> to credit an account that was opened
-debit  <amount> to debit an account that was opened
-balance to print total balance in bank account
-finish to release your current account session
-exit to exit your session completely
 -------------------------------------------------------------------------
 Test Case 2: Trying To Connect and Unsuccessful
- - need to test this on another computer still (will do later)
+ - Run Server
+ - Run Client
+ 
+ Expected Output:
+ NO SERVER FOUND...Trying again
 -------------------------------------------------------------------------
 Test Case 3: Opening/Starting an Account and Crediting/Debiting and Printing Balance
 
@@ -55,7 +66,6 @@ Test Case 3: Opening/Starting an Account and Crediting/Debiting and Printing Bal
 
  - Type balance to print out the total balance in the account
 	- Ex: balance
-
 
 Expected Output by both Client/Server:
 
