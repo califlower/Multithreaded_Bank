@@ -1,10 +1,7 @@
 Instructions for testing:
-
  - In order for the programs to work, client processes must specify the name of the machine where the client expects to find the server process as a command line argument
-
  - The server takes no command line arguments.
---------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------
 Test Case 1: (Trying to connect to server and successful)
 
  - Run server
@@ -12,14 +9,12 @@ Test Case 1: (Trying to connect to server and successful)
  - Run client 
    - Ex: (command line argument for same computer ./client localhost)
 
-
 Expected Output (when connecting is a success):
 
 Server will output:
 
 Client Connection Accepted
 Process Created with ID : (random pid here)
-
 
 Client will output:
 
@@ -34,12 +29,9 @@ debit  <amount> to debit an account that was opened
 balance to print total balance in bank account
 finish to release your current account session
 exit to exit your session completely
-
 -------------------------------------------------------------------------
 Test Case 2: Trying To Connect and Unsuccessful
-
  - need to test this on another computer still (will do later)
-
 -------------------------------------------------------------------------
 Test Case 3: Opening/Starting an Account and Crediting/Debiting and Printing Balance
 
@@ -101,7 +93,6 @@ open asdasdawdawdawlijawfalwfjiawljflaiwjflawjflaijwflawijflaijwflaiwjflawijfalw
 
 Expected Output by Client:
 Account name too large
-
 -------------------------------------------------------------------------
 Test Case 5: Trying to Debit amount which is greater than the total balance
 
@@ -119,7 +110,7 @@ debit 1500
 Expected Output by Client:
 Cannot debit. Not enough money in account
 -------------------------------------------------------------------------
-Test Case 6: Trying to add an account which has the same name
+Test Case 6: Trying to open an account which has the same name
 
  - Run server and client
  - Open an account
@@ -136,11 +127,18 @@ Test Case 7: Trying to start an account while running already on another client
  - Open another client
  - Start the same account name on the second client
 
-
 Expected Output by Client:
 Account in use
 -------------------------------------------------------------------------
-Test Case 8: Trying to open more than 20 bank accounts
+Test Case 8: Trying to start an account which does not exist
+
+ - Run server and client
+ - Start an account which does not exist
+
+Expected Output by Client:
+Account does not exist
+-------------------------------------------------------------------------
+Test Case 9: Trying to open more than 20 bank accounts
 
  - Run server and client
  - Open 20+ different accounts
@@ -148,23 +146,46 @@ Test Case 8: Trying to open more than 20 bank accounts
 Expected Output by Client:
 Too many accounts
 -------------------------------------------------------------------------
-Test Case 9: Opening an account, working on it, then finishing, and opening another account
+Test Case 10: Opening an account, working on it, then finishing, and opening another account
+
+ - Run server and client
+ - open an account
+ - start the account
+ - credit/debit account
+ - type finish
+ - open another account
+ - start that account
+
+Expected Output from Client (Example):
+
+open cal      
+Account Added
+start cal
+Started session with account name : cal
+credit 500
+Account credited +500.000000
+finish
+Account released
+open brian
+Account Added
+start brian
+Started session with account name : brian
 -------------------------------------------------------------------------
-Test Case 10: Closing the Client
+Test Case 11: Closing the Client
 
  - Close a client
 
 Expected Output by Server (server will still be running however):
 Client Exitting
 -------------------------------------------------------------------------
-Test Case 11: Closing the Server
+Test Case 12: Closing the Server
 
  - Close a server
 
 Expected Output by Client (client will stop working altogether): 
 Server Exitting
 -------------------------------------------------------------------------
-Test Case 12: Exiting the Client Using Exit
+Test Case 13: Exiting the Client Using Exit
 
  - Type exit in a client
 
