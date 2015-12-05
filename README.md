@@ -1,6 +1,10 @@
 # Multithreaded_Bank
 A multithreaded bank application
 
+##EXTRA CREDIT
+
+Extra credit can be found in server2.c. It forks upon client connection and uses mmaps and shared memory.
+
 ##Client
 
 This is a command line program that takes 1 argument
