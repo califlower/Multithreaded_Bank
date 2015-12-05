@@ -25,7 +25,7 @@ Test Case 1: (Trying to connect to server and successful)
  - Run server
    - Ex: ./server
  - Run client 
-   - Ex: (command line argument for same computer ./client localhost)
+   - Ex: (command line argument for client: ./client <ip address>) **without inputting ip address, the default address will be the localhost ip address of the computer**
 
 Expected Output (when connecting is a success):
 
